@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import Link from 'next/link';
 import Layout from "../layouts/Layout";
 import configData from "../config.json";
 
@@ -38,6 +39,8 @@ const Login = () => {
                 <button type='submit'>Sign in</button>
 
             </form>
+
+            <div className="password-reset-btn"><Link href="/password/new">Reset password!</Link></div>
         </Layout>
     );
 };

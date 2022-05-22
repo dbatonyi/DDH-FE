@@ -48,7 +48,9 @@ const Layout = (props) => {
 
     if (!auth && auth === false) {
 
-        if (getLocation !== "/login" && getLocation !== "/register") {
+        const resetPasswordUrls = getLocation.includes("/password/");
+
+        if (getLocation !== "/login" && getLocation !== "/register" && !resetPasswordUrls) {
             router.push('/login');
         }
 
