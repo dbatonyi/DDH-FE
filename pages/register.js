@@ -1,31 +1,38 @@
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import Layout from "../layouts/Layout";
 import configData from "../config.json";
 
 const Register = () => {
-    const [email, setEmail] = useState("");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [password, setPassword] = useState("");
-    const [rePassword, setRePassword] = useState("");
     const router = useRouter();
 
     const submit = async (e) => {
         e.preventDefault();
 
-        await fetch(`${configData.SERVER_URL}/api/register`, {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: email,
-                firstname: firstName,
-                lastname: lastName,
-                password: password
-            })
-        });
+        const formData = new FormData(e.currentTarget);
 
-        await router.push('/login');
+        const firstName = formData.get('firstname');
+        const lastName = formData.get('lastname');
+        const email = formData.get('email');
+        const password = formData.get('password');
+        const repassword = formData.get('repassword');
+
+        if (password === repassword) {
+            await fetch(`${configData.SERVER_URL}/api/register`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: email,
+                    firstname: firstName,
+                    lastname: lastName,
+                    password: password
+                })
+            });
+
+            await router.push('/login');
+        }
+
+        return console.log("Password must be match")
     }
 
     return (

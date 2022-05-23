@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head';
 import Link from 'next/link';
 import configData from "../config.json";
+import Navbar from "../components/Navbar";
 import { useRouter } from "next/router";
 
 const Layout = (props) => {
@@ -9,16 +10,6 @@ const Layout = (props) => {
     const getLocation = router.pathname;
 
     const [auth, setAuth] = useState("");
-
-    const logout = async () => {
-        await fetch(`${configData.SERVER_URL}/api/logout`, {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-        });
-
-        await router.push('/login');
-    }
 
     useEffect(() => {
         (
@@ -34,6 +25,12 @@ const Layout = (props) => {
                   setAuth(true);
               } else {
                   setAuth(false);
+                  const resetPasswordUrls = getLocation.includes("/password/");
+
+                  if (getLocation !== "/login" && getLocation !== "/register" && !resetPasswordUrls) {
+                    router.push('/login');
+                  }
+                
               }
 
             } catch (e) {
@@ -43,41 +40,6 @@ const Layout = (props) => {
           }
         )();
     });
-
-    let menu;
-
-    if (!auth && auth === false) {
-
-        const resetPasswordUrls = getLocation.includes("/password/");
-
-        if (getLocation !== "/login" && getLocation !== "/register" && !resetPasswordUrls) {
-            router.push('/login');
-        }
-
-        menu = (
-            <ul>
-                <li>
-                    <Link href="/login">
-                        <a>Login</a>
-                    </Link>
-                </li>
-                <li>
-                    <Link href="/register">
-                        <a>Register</a>
-                    </Link>
-                </li>
-            </ul>
-        )
-
-    } else {
-        menu = (
-            <ul>
-                <li>
-                    <a onClick={logout}>Logout</a>
-                </li>
-            </ul>
-        )
-    }
 
     return (
         <div className="app-container">
@@ -93,7 +55,7 @@ const Layout = (props) => {
                         <a>Home</a>
                     </Link>
                     <div>
-                        {menu}
+                        <Navbar auth={auth} />
                     </div>
                 </div>   
             </nav>

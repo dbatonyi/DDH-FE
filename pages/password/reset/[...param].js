@@ -4,25 +4,33 @@ import Layout from "../../../layouts/Layout";
 import configData from "../../../config.json";
 
 const ResetPassword = () => {
-    const [password, setPassword] = useState("");
-    const [rePassword, setRePassword] = useState("");
+
     const router = useRouter();
     const urlParam = router.query.param;
 
     const submit = async (e) => {
         e.preventDefault();
 
-        await fetch(`${configData.SERVER_URL}/api/password/reset/${urlParam}`, {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({
-                password: password,
-                repassword: rePassword 
-            })
-        });
+        const formData = new FormData(e.currentTarget);
 
-        await router.push('/');
+        const password = formData.get('password');
+        const repassword = formData.get('repassword');
+
+        if (password === repassword) {
+            await fetch(`${configData.SERVER_URL}/api/password/reset/${urlParam}`, {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({
+                    password: password,
+                    repassword: rePassword 
+                })
+            });
+
+            await router.push('/');
+        }
+
+        return console.log("Password must match")
     }
 
     return (
@@ -31,10 +39,10 @@ const ResetPassword = () => {
                 <h1>Reset Password</h1>
 
                 <label htmlFor="password">New password</label>     
-                <input name="password" type="password" required onChange={e => setPassword(e.target.value)} />
+                <input name="password" type="password" required />
 
                 <label htmlFor="password">New password again</label>     
-                <input name="password" type="password" required onChange={e => setRePassword(e.target.value)}/>
+                <input name="repassword" type="password" required />
 
                 <button type='submit'>Submit</button>
 

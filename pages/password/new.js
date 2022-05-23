@@ -4,11 +4,14 @@ import Layout from "../../layouts/Layout";
 import configData from "../../config.json";
 
 const NewPassword = () => {
-    const [email, setEmail] = useState("");
     const router = useRouter();
 
     const submit = async (e) => {
         e.preventDefault();
+
+        const formData = new FormData(e.currentTarget);
+
+        const email = formData.get('email');
 
         await fetch(`${configData.SERVER_URL}/api/password/new`, {
             method: "POST",
@@ -28,7 +31,7 @@ const NewPassword = () => {
                 <h1>Reset Password</h1>
 
                 <label htmlFor="email">Email</label>     
-                <input name="email" type="email" required onChange={e => setEmail(e.target.value)}/>
+                <input name="email" type="email" required />
 
                 <button type='submit'>Reset password</button>
 
