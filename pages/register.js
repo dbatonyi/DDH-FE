@@ -39,19 +39,19 @@ const Register = () => {
         <Layout>
             <form className="signup-container__form" onSubmit={submit}>
                 <label htmlFor="email">Email Address</label>         
-                <input className="text" name="email" type="email" required onChange={e => setEmail(e.target.value)}/>
+                <input className="text" name="email" type="email" required />
                     
                 <label htmlFor="firstname">Firstname</label>
-                <input name="firstname" type="text" required onChange={e => setFirstName(e.target.value)}/>
+                <input name="firstname" type="text" required />
                 
                 <label htmlFor="lastname">Lastname</label>
-                <input name="lastname" type="text" required onChange={e => setLastName(e.target.value)}/>
+                <input name="lastname" type="text" required />
                 
                 <label htmlFor="password">Password</label>     
-                <input name="password" type="password" required onChange={e => setPassword(e.target.value)}/>
+                <input name="password" type="password" required />
                     
                 <label htmlFor="repassword">Re-Password</label>
-                <input name="repassword" type="password" required onChange={e => setRePassword(e.target.value)}/>
+                <input name="repassword" type="password" required />
                     
                 <div className="signup-container__form--submit-btn">
                     <button className="btn" type="submit">Sign up</button>

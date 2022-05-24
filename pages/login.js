@@ -7,8 +7,6 @@ import configData from "../config.json";
 const Login = () => {
     const router = useRouter();
 
-    console.log("but why")
-
     const submit = async (e) => {
         e.preventDefault();
 
