@@ -1,22 +1,8 @@
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import configData from '../config.json';
 
-const Navbar = ({ auth }) => {
+const Navbar = ({ auth, onLogout }) => {
     const router = useRouter();
-
-    console.log(auth);
-
-    const logout = async () => {
-        await fetch(`${configData.SERVER_URL}/api/logout`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include'
-        });
-
-        await router.push('/login');
-    };
 
     return (
         <nav>
@@ -38,7 +24,7 @@ const Navbar = ({ auth }) => {
                         <Link href='/task/new'>Create New Task</Link>
                     </li>
                     <li>
-                        <div onClick={logout}>Logout</div>
+                        <div onClick={onLogout}>Logout</div>
                     </li>
                 </ul>
             )}

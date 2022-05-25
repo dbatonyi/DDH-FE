@@ -10,9 +10,6 @@ const NewTask = (props) => {
     const authContext = useContext(AuthContext);
 
     console.log(authContext);
-    useEffect(() => {
-        console.log('authContex updated 😜', authContext);
-    }, [authContext]);
 
     const submit = async (e) => {
         e.preventDefault();

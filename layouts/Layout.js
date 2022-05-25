@@ -13,13 +13,14 @@ const Layout = (props) => {
     const [auth, setAuth] = useState(null);
     const [userInfo, setUserInfo] = useState({});
 
-    useEffect(() => {
+    useEffect(authentication, [router.route]);
+
+    function authentication() {
         fetch(`${configData.SERVER_URL}/api/user`, {
             credentials: 'include'
         })
             .then((res) => res.json())
             .then((content) => {
-                console.log(content);
                 const authorized = content.auth;
                 setAuth(authorized);
                 if (authorized) {
@@ -34,10 +35,46 @@ const Layout = (props) => {
                 }
             })
             .catch((err) => setAuth(false));
-    }, []);
+    }
+
+    function logout() {
+        fetch(`${configData.SERVER_URL}/api/logout`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+        });
+
+        setAuth(false);
+
+        router.push('/login');
+    }
+
+    function login(email, password) {
+        fetch(`${configData.SERVER_URL}/api/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({
+                email,
+                password
+            })
+        });
+
+        setAuth(true);
+
+        router.push('/');
+    }
 
     return (
-        <AuthContext.Provider value={{ auth, userInfo }}>
+        <AuthContext.Provider
+            value={{
+                auth,
+                userInfo,
+                actions: {
+                    logout,
+                    login
+                }
+            }}>
             <div className='app-container'>
                 <Head>
                     <title>DDH - Frontend</title>
@@ -47,14 +84,11 @@ const Layout = (props) => {
 
                 <nav>
                     <div>
-                        <Navbar auth={auth} />
+                        <Navbar auth={auth} onLogout={logout} />
                     </div>
                 </nav>
 
-                <main className='form-signin'>
-                    {props.children}
-                    {/*{React.cloneElement(props.children, {didComplete: auth})}*/}
-                </main>
+                <main className='form-signin'>{props.children}</main>
 
                 <footer className='footer'></footer>
             </div>

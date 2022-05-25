@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import configData from '../config.json';
+import { AuthContext } from '../layouts/Layout';
 
 const Login = () => {
-    const router = useRouter();
+    const { actions } = useContext(AuthContext);
 
     const submit = async (e) => {
         e.preventDefault();
@@ -13,18 +14,7 @@ const Login = () => {
 
         const email = formData.get('email');
         const password = formData.get('password');
-
-        await fetch(`${configData.SERVER_URL}/api/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
-        });
-
-        await router.push('/');
+        actions.login(email, password);
     };
 
     return (
