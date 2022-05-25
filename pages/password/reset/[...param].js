@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
-import Layout from "../../../layouts/Layout";
-import configData from "../../../config.json";
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import configData from '../../../config.json';
 
 const ResetPassword = () => {
-
     const router = useRouter();
     const urlParam = router.query.param;
 
@@ -18,37 +16,35 @@ const ResetPassword = () => {
 
         if (password === repassword) {
             await fetch(`${configData.SERVER_URL}/api/password/reset/${urlParam}`, {
-                method: "POST",
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',
                 body: JSON.stringify({
                     password: password,
-                    repassword: rePassword 
+                    repassword: rePassword
                 })
             });
 
             await router.push('/');
         }
 
-        return console.log("Password must match")
-    }
+        return console.log('Password must match');
+    };
 
     return (
-        <Layout>
+        <>
             <form onSubmit={submit}>
                 <h1>Reset Password</h1>
 
-                <label htmlFor="password">New password</label>     
-                <input name="password" type="password" required />
+                <label htmlFor='password'>New password</label>
+                <input name='password' type='password' required />
 
-                <label htmlFor="password">New password again</label>     
-                <input name="repassword" type="password" required />
+                <label htmlFor='password'>New password again</label>
+                <input name='repassword' type='password' required />
 
                 <button type='submit'>Submit</button>
-
             </form>
-
-        </Layout>
+        </>
     );
 };
 
