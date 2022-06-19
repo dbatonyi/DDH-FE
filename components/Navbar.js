@@ -24,6 +24,9 @@ const Navbar = ({ auth, onLogout }) => {
                         <Link href='/task/new'>Create New Task</Link>
                     </li>
                     <li>
+                        <Link href='/task/list'>Task List</Link>
+                    </li>
+                    <li>
                         <div onClick={onLogout}>Logout</div>
                     </li>
                 </ul>

@@ -1,7 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { useRouter } from 'next/router';
+import React, { useContext } from 'react';
 import Link from 'next/link';
-import configData from '../config.json';
 import { AuthContext } from '../layouts/Layout';
 
 const Login = () => {

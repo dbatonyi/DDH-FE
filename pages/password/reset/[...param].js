@@ -12,9 +12,9 @@ const ResetPassword = () => {
         const formData = new FormData(e.currentTarget);
 
         const password = formData.get('password');
-        const repassword = formData.get('repassword');
+        const rePassword = formData.get('repassword');
 
-        if (password === repassword) {
+        if (password === rePassword) {
             await fetch(`${configData.SERVER_URL}/api/password/reset/${urlParam}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
