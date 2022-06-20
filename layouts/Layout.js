@@ -10,6 +10,7 @@ const Layout = (props) => {
     const router = useRouter();
     const getLocation = router.pathname;
 
+    const [isLoading, setIsLoading] = useState(true);
     const [auth, setAuth] = useState(null);
     const [userInfo, setUserInfo] = useState({});
 
@@ -25,12 +26,15 @@ const Layout = (props) => {
                 setAuth(authorized);
                 if (authorized) {
                     setUserInfo(content.userInfo);
+                    setIsLoading(false);
                 } else {
                     const resetPasswordUrls = getLocation.includes('/password/');
 
                     if (!['/login', '/register'].includes(getLocation) && !resetPasswordUrls) {
                         console.log('run');
                         router.push('/login');
+                    } else {
+                        setIsLoading(false);
                     }
                 }
             })
@@ -66,33 +70,39 @@ const Layout = (props) => {
     }
 
     return (
-        <AuthContext.Provider
-            value={{
-                auth,
-                userInfo,
-                actions: {
-                    logout,
-                    login
-                }
-            }}>
-            <div className='app-container'>
-                <Head>
-                    <title>DDH - Frontend</title>
-                    <meta name='description' content='DDH FE' />
-                    <link rel='icon' href='/favicon.ico' />
-                </Head>
+        <>
+            {isLoading ? (
+                <>Page is loading!</>
+            ) : (
+                <AuthContext.Provider
+                    value={{
+                        auth,
+                        userInfo,
+                        actions: {
+                            logout,
+                            login
+                        }
+                    }}>
+                    <div className='app-container'>
+                        <Head>
+                            <title>DDH - Frontend</title>
+                            <meta name='description' content='DDH FE' />
+                            <link rel='icon' href='/favicon.ico' />
+                        </Head>
 
-                <nav>
-                    <div>
-                        <Navbar auth={auth} onLogout={logout} />
+                        <nav>
+                            <div>
+                                <Navbar auth={auth} onLogout={logout} />
+                            </div>
+                        </nav>
+
+                        <main className='form-signin'>{props.children}</main>
+
+                        <footer className='footer'></footer>
                     </div>
-                </nav>
-
-                <main className='form-signin'>{props.children}</main>
-
-                <footer className='footer'></footer>
-            </div>
-        </AuthContext.Provider>
+                </AuthContext.Provider>
+            )}
+        </>
     );
 };
 
