@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import configData from '../../config.json';
 
 const Task = (props) => {
@@ -30,6 +31,7 @@ const Task = (props) => {
                 <>Loading...</>
             ) : (
                 <>
+                    <Link href={`/task/edit/${pid}`}>Edit</Link>
                     <h1>{data.title}</h1>
                     <p>{data.taskShort}</p>
                     <p>{data.taskDescription}</p>
