@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { TagsInput } from 'react-tag-input-component';
+import TagsInput from 'react-tagsinput';
 import { useRouter } from 'next/router';
 import Select from 'react-select';
 import configData from '../../config.json';
@@ -39,8 +39,7 @@ const NewTask = (props) => {
 
     const categoryOptions = [
         { value: 'frontend', label: 'Frontend' },
-        { value: 'backend', label: 'Backend' },
-        { value: 'test', label: 'Test' }
+        { value: 'backend', label: 'Backend' }
     ];
 
     return (

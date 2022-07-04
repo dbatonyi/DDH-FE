@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TagsInput } from 'react-tag-input-component';
+import TagsInput from 'react-tagsinput';
 import { useRouter } from 'next/router';
 import Select from 'react-select';
 import configData from '../../../config.json';
@@ -14,8 +14,8 @@ const EditTask = (props) => {
     const [title, setTitle] = useState();
     const [short, setShort] = useState();
     const [body, setBody] = useState();
-    const [category, setCategory] = useState();
     const [tag, setTag] = useState([]);
+    const [selectedOption, setSelectedOption] = useState(null);
 
     useEffect(getTask, []);
 
@@ -23,8 +23,30 @@ const EditTask = (props) => {
         setTitle(data.title);
         setShort(data.taskShort);
         setBody(data.taskDescription);
-        setCategory(data.taskCategory);
-        setTag(data.taskTags);
+
+        if (data.taskTags) {
+            switch (data.taskTags.includes(',')) {
+                case true:
+                    setTag(data.taskTags.split(','));
+                    break;
+                case false:
+                    setTag(data.taskTags);
+                    break;
+                default:
+                    console.log('taskTags error');
+            }
+        }
+
+        switch (data.taskCategory) {
+            case 'backend':
+                setSelectedOption({ value: 'backend', label: 'Backend' });
+                break;
+            case 'frontend':
+                setSelectedOption({ value: 'frontend', label: 'Frontend' });
+                break;
+            default:
+                console.log('taskCategory error');
+        }
     }, [data]);
 
     function getTask() {
@@ -48,7 +70,7 @@ const EditTask = (props) => {
             credentials: 'include',
             body: JSON.stringify({
                 title: title,
-                taskCategory: category,
+                taskCategory: selectedOption.value,
                 taskTags: tag.toString(),
                 taskShort: short,
                 taskDescription: body,
@@ -61,63 +83,62 @@ const EditTask = (props) => {
 
     const categoryOptions = [
         { value: 'frontend', label: 'Frontend' },
-        { value: 'backend', label: 'Backend' },
-        { value: 'test', label: 'Test' }
+        { value: 'backend', label: 'Backend' }
     ];
 
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
-
     return (
-        <form onSubmit={submit}>
-            <h1>Edit task</h1>
+        <>
+            {isLoading ? (
+                <>Still loading</>
+            ) : (
+                <form onSubmit={submit}>
+                    <h1>Edit task</h1>
 
-            <label htmlFor='title'>Title</label>
-            <input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className='text'
-                name='title'
-                type='text'
-                required
-            />
+                    <label htmlFor='title'>Title</label>
+                    <input
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className='text'
+                        name='title'
+                        type='text'
+                        required
+                    />
 
-            <label htmlFor='short'>Task Short</label>
-            <textarea
-                value={short}
-                onChange={(e) => setShort(e.target.value)}
-                className='text'
-                name='short'
-                type='textarea'
-                required
-            />
+                    <label htmlFor='short'>Task Short</label>
+                    <textarea
+                        value={short}
+                        onChange={(e) => setShort(e.target.value)}
+                        className='text'
+                        name='short'
+                        type='textarea'
+                        required
+                    />
 
-            <label htmlFor='body'>Task Description</label>
-            <textarea
-                value={body}
-                onChange={(e) => setBody(e.target.value)}
-                className='text'
-                name='body'
-                type='textarea'
-                required
-            />
+                    <label htmlFor='body'>Task Description</label>
+                    <textarea
+                        value={body}
+                        onChange={(e) => setBody(e.target.value)}
+                        className='text'
+                        name='body'
+                        type='textarea'
+                        required
+                    />
 
-            <label htmlFor='category'>Task Category</label>
-            <Select
-                defaultValue={{
-                    label: category ? capitalizeFirstLetter(category) : '',
-                    value: category
-                }}
-                name='category'
-                options={categoryOptions}
-            />
+                    <label htmlFor='category'>Task Category</label>
+                    <Select
+                        onChange={setSelectedOption}
+                        value={selectedOption}
+                        name='category'
+                        options={categoryOptions}
+                    />
 
-            <label htmlFor='tag'>Task Tags</label>
-            <TagsInput value={tag} onChange={setTag} name='tag' placeHolder='enter tags' />
+                    <label htmlFor='tag'>Task Tags</label>
+                    <TagsInput value={tag} onChange={setTag} name='tag' placeHolder='enter tags' />
 
-            <button type='submit'>Save</button>
-        </form>
+                    <button type='submit'>Save</button>
+                </form>
+            )}
+        </>
     );
 };
 
