@@ -9,7 +9,6 @@ const EditTask = (props) => {
     const { pid } = router.query;
 
     const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState([]);
 
     const [title, setTitle] = useState();
     const [short, setShort] = useState();
@@ -17,49 +16,52 @@ const EditTask = (props) => {
     const [tag, setTag] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
 
-    useEffect(getTask, []);
-
     useEffect(() => {
-        setTitle(data.title);
-        setShort(data.taskShort);
-        setBody(data.taskDescription);
+        let isFetched = false;
 
-        if (data.taskTags) {
-            switch (data.taskTags.includes(',')) {
-                case true:
-                    setTag(data.taskTags.split(','));
-                    break;
-                case false:
-                    setTag(data.taskTags);
-                    break;
-                default:
-                    console.log('taskTags error');
-            }
-        }
+        const getTask = async () => {
+            const fetchTask = await fetch(`${configData.SERVER_URL}/api/task/${pid}`, {
+                credentials: 'include'
+            });
+            const getData = await fetchTask.json();
 
-        switch (data.taskCategory) {
-            case 'backend':
-                setSelectedOption({ value: 'backend', label: 'Backend' });
-                break;
-            case 'frontend':
-                setSelectedOption({ value: 'frontend', label: 'Frontend' });
-                break;
-            default:
-                console.log('taskCategory error');
-        }
-    }, [data]);
+            if (!isFetched) {
+                setTitle(getData.title);
+                setShort(getData.taskShort);
+                setBody(getData.taskDescription);
 
-    function getTask() {
-        fetch(`${configData.SERVER_URL}/api/task/${pid}`, {
-            credentials: 'include'
-        })
-            .then((res) => res.json())
-            .then((content) => {
-                setData(content);
+                switch (getData.taskCategory) {
+                    case 'backend':
+                        setSelectedOption({ value: 'backend', label: 'Backend' });
+                        break;
+                    case 'frontend':
+                        setSelectedOption({ value: 'frontend', label: 'Frontend' });
+                        break;
+                    default:
+                        console.log('taskCategory error');
+                }
+
+                if (getData.taskTags) {
+                    switch (getData.taskTags.includes(',')) {
+                        case true:
+                            setTag(getData.taskTags.split(','));
+                            break;
+                        case false:
+                            setTag([getData.taskTags]);
+                            break;
+                        default:
+                            console.log('taskTags error');
+                    }
+                }
+
                 setIsLoading(false);
-            })
-            .catch((err) => console.log(err));
-    }
+            }
+        };
+
+        getTask().catch((err) => console.log(err));
+
+        return () => (isFetched = true);
+    }, []);
 
     const submit = async (e) => {
         e.preventDefault();
