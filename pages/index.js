@@ -1,3 +1,7 @@
 export default function Home(props) {
-    return <>Here we are son!</>;
+    return (
+        <div className='loader-box'>
+            <div className='loader'></div>
+        </div>
+    );
 }

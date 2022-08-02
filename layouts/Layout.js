@@ -11,10 +11,15 @@ const Layout = (props) => {
     const getLocation = router.pathname;
 
     const [isLoading, setIsLoading] = useState(true);
-    const [auth, setAuth] = useState(null);
+    const [auth, setAuth] = useState(false);
+    const [authFailed, setAuthFailed] = useState(false);
     const [userInfo, setUserInfo] = useState({});
 
     useEffect(authentication, [router.route]);
+
+    useEffect(() => {
+        setAuthFailed(false);
+    }, [router.route]);
 
     function authentication() {
         fetch(`${configData.SERVER_URL}/api/user`, {
@@ -26,6 +31,7 @@ const Layout = (props) => {
                 setAuth(authorized);
                 if (authorized) {
                     setUserInfo(content.userInfo);
+                    router.push('/dashboard');
                     setIsLoading(false);
                 } else {
                     const resetPasswordUrls = getLocation.includes('/password/');
@@ -53,8 +59,8 @@ const Layout = (props) => {
         router.push('/login');
     }
 
-    function login(email, password) {
-        fetch(`${configData.SERVER_URL}/api/login`, {
+    async function login(email, password) {
+        const response = await fetch(`${configData.SERVER_URL}/api/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -64,9 +70,14 @@ const Layout = (props) => {
             })
         });
 
-        setAuth(true);
-
-        router.push('/');
+        if (response.status === 200) {
+            setAuth(true);
+            router.push('/dashboard');
+        }
+        if (response.status === 401) {
+            setAuthFailed(true);
+            setAuth(false);
+        }
     }
 
     return (
@@ -77,6 +88,7 @@ const Layout = (props) => {
                 <AuthContext.Provider
                     value={{
                         auth,
+                        authFailed,
                         userInfo,
                         actions: {
                             logout,
@@ -90,13 +102,9 @@ const Layout = (props) => {
                             <link rel='icon' href='/favicon.ico' />
                         </Head>
 
-                        <nav>
-                            <div>
-                                <Navbar auth={auth} onLogout={logout} />
-                            </div>
-                        </nav>
+                        <Navbar auth={auth} onLogout={logout} />
 
-                        <main className='form-signin'>{props.children}</main>
+                        <main className='ddh-main'>{props.children}</main>
 
                         <footer className='footer'></footer>
                     </div>

@@ -35,30 +35,34 @@ const Register = () => {
     };
 
     return (
-        <>
-            <form className='signup-container__form' onSubmit={submit}>
-                <label htmlFor='email'>Email Address</label>
-                <input className='text' name='email' type='email' required />
+        <div className='ddh-signup'>
+            <div className='ddh-signup-container'>
+                <form className='ddh-signup-container__form' onSubmit={submit}>
+                    <h1>Registration</h1>
 
-                <label htmlFor='firstname'>Firstname</label>
-                <input name='firstname' type='text' required />
+                    <label htmlFor='email'>Email Address</label>
+                    <input className='text' name='email' type='email' required />
 
-                <label htmlFor='lastname'>Lastname</label>
-                <input name='lastname' type='text' required />
+                    <label htmlFor='firstname'>Firstname</label>
+                    <input name='firstname' type='text' required />
 
-                <label htmlFor='password'>Password</label>
-                <input name='password' type='password' required />
+                    <label htmlFor='lastname'>Lastname</label>
+                    <input name='lastname' type='text' required />
 
-                <label htmlFor='repassword'>Re-Password</label>
-                <input name='repassword' type='password' required />
+                    <label htmlFor='password'>Password</label>
+                    <input name='password' type='password' required />
 
-                <div className='signup-container__form--submit-btn'>
-                    <button className='btn' type='submit'>
-                        Sign up
-                    </button>
-                </div>
-            </form>
-        </>
+                    <label htmlFor='repassword'>Re-Password</label>
+                    <input name='repassword' type='password' required />
+
+                    <div className='signup-container__form--submit-btn'>
+                        <button className='btn' type='submit'>
+                            Sign up
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 
