@@ -31,13 +31,15 @@ const Layout = (props) => {
                 setAuth(authorized);
                 if (authorized) {
                     setUserInfo(content.userInfo);
-                    router.push('/dashboard');
                     setIsLoading(false);
+
+                    if (getLocation === '/') {
+                        router.push('/dashboard');
+                    }
                 } else {
                     const resetPasswordUrls = getLocation.includes('/password/');
 
                     if (!['/login', '/register'].includes(getLocation) && !resetPasswordUrls) {
-                        console.log('run');
                         router.push('/login');
                     } else {
                         setIsLoading(false);
@@ -105,8 +107,6 @@ const Layout = (props) => {
                         <Navbar auth={auth} onLogout={logout} />
 
                         <main className='ddh-main'>{props.children}</main>
-
-                        <footer className='footer'></footer>
                     </div>
                 </AuthContext.Provider>
             )}

@@ -32,19 +32,24 @@ const ResetPassword = () => {
     };
 
     return (
-        <>
-            <form onSubmit={submit}>
-                <h1>Reset Password</h1>
+        <div className='ddh-password'>
+            <div className='ddh-password__form-container'>
+                <form onSubmit={submit}>
+                    <h1>Reset Password</h1>
 
-                <label htmlFor='password'>New password</label>
-                <input name='password' type='password' required />
+                    <label htmlFor='password'>New password</label>
+                    <input name='password' type='password' required />
 
-                <label htmlFor='password'>New password again</label>
-                <input name='repassword' type='password' required />
-
-                <button type='submit'>Submit</button>
-            </form>
-        </>
+                    <label htmlFor='password'>New password again</label>
+                    <input name='repassword' type='password' required />
+                    <div className='submit-btn'>
+                        <button className='btn' type='submit'>
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 

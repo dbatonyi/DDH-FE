@@ -40,7 +40,11 @@ const Login = () => {
                     <label htmlFor='password'>Password</label>
                     <input className='login-password' name='password' type='password' required />
 
-                    <button type='submit'>Sign in</button>
+                    <div className='submit-btn'>
+                        <button className='btn' type='submit'>
+                            Sign in
+                        </button>
+                    </div>
                 </form>
                 <div className='ddh-login__form-container--password-reset'>
                     <Link href='/password/new'>Reset password!</Link>

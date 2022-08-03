@@ -1,6 +1,15 @@
 .ddh-navigation-sidebar {
-  width: 10%;
-  background-image: linear-gradient(#383f76, #23284f);
+  width: 12%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(236, 236, 236, 0.75);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6px);
+  height: 100vh;
+  z-index: 1;
+  border-right: 4px solid;
+  border-color: #008aff;
 
   nav {
     margin: 40px 0;
@@ -12,39 +21,30 @@
     }
 
     li {
-      margin: 20px 0;
+      padding: 5px 0;
+
+      &:first-child {
+        padding-top: 0;
+      }
 
       &.active a {
-        background-color: #576398;
-        color: white;
-        border-color: white;
-        transition: all 0.3s ease-in-out;
-
-        &:hover {
-          background-color: white;
-          color: black;
-          border-color: transparent;
-        }
+        background: #576398;
       }
     }
 
-    a {
+    .separator {
+      background: whitesmoke;
+      height: 4px;
       width: 80%;
-      display: block;
-      margin: auto;
-      padding: 10px;
-      background-color: white;
-      border-radius: 30px;
-      text-align: center;
-      font-weight: 600;
-      border: 2px solid transparent;
-      transition: all 0.3s ease-in-out;
+      margin: 5px auto;
+    }
 
-      &:hover {
-        background-color: #576398;
-        color: white;
-        border-color: white;
-      }
+    a,
+    .nav-logout-btn {
+      @include button(white, rgba(77, 132, 255, 0.8));
+      width: 85%;
+      margin: auto;
+      text-align: center;
     }
   }
 }

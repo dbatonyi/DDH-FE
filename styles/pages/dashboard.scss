@@ -1,0 +1,13 @@
+.ddh-dashboard {
+  width: 100%;
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__container {
+    @include auth-card;
+    width: 75%;
+  }
+}

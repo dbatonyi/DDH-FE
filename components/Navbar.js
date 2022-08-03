@@ -18,17 +18,24 @@ const Navbar = ({ auth, onLogout }) => {
                     </ul>
                 ) : (
                     <ul className='menu'>
-                        <li className={router.asPath == '/' ? 'active' : ''}>
-                            <Link href='/'>Home</Link>
+                        <li className={router.asPath == '/dashboard' ? 'active' : ''}>
+                            <Link href='/dashboard'>Home</Link>
                         </li>
+                        <li className={router.asPath == '/tmf' ? 'active' : ''}>
+                            <Link href='/tmf'>Task Manager Form</Link>
+                        </li>
+                        <div className='separator'></div>
                         <li className={router.asPath == '/task/new' ? 'active' : ''}>
-                            <Link href='/task/new'>Create New Task</Link>
+                            <Link href='/task/new'>Create Task</Link>
                         </li>
                         <li className={router.asPath == '/task/list' ? 'active' : ''}>
                             <Link href='/task/list'>Task List</Link>
                         </li>
+                        <div className='separator'></div>
                         <li>
-                            <div onClick={onLogout}>Logout</div>
+                            <div className='nav-logout-btn' onClick={onLogout}>
+                                Logout
+                            </div>
                         </li>
                     </ul>
                 )}

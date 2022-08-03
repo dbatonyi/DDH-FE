@@ -25,16 +25,22 @@ const NewPassword = () => {
     };
 
     return (
-        <>
-            <form onSubmit={submit}>
-                <h1>Reset Password</h1>
+        <div className='ddh-password'>
+            <div className='ddh-password__form-container'>
+                <form onSubmit={submit}>
+                    <h1>Reset Password</h1>
 
-                <label htmlFor='email'>Email</label>
-                <input name='email' type='email' required />
+                    <label htmlFor='email'>Email</label>
+                    <input name='email' type='email' required />
 
-                <button type='submit'>Reset password</button>
-            </form>
-        </>
+                    <div className='submit-btn'>
+                        <button className='btn' type='submit'>
+                            Reset password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 

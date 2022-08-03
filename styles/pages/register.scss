@@ -7,14 +7,9 @@
   justify-content: center;
 
   &-container {
-    padding: 40px;
-    min-height: 500px;
-    width: 60%;
-    display: flex;
-    flex-wrap: wrap;
-    border-radius: 30px;
-    background-color: white;
-    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.9);
+    @include auth-card;
+
+    width: 50%;
 
     > form,
     > div {
@@ -41,18 +36,13 @@
         margin-bottom: 10px;
       }
 
-      button {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-top: 20px;
-        transition: all 0.3s ease-in-out;
-        font-weight: 600;
-        cursor: pointer;
+      .submit-btn {
+        width: 30%;
+        padding-top: 20px;
+        margin: auto;
 
-        &:hover {
-          background-color: #ccc;
+        button {
+          @include button(white, rgba(77, 132, 255, 0.8));
         }
       }
     }

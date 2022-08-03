@@ -55,7 +55,7 @@ const Register = () => {
                     <label htmlFor='repassword'>Re-Password</label>
                     <input name='repassword' type='password' required />
 
-                    <div className='signup-container__form--submit-btn'>
+                    <div className='submit-btn'>
                         <button className='btn' type='submit'>
                             Sign up
                         </button>

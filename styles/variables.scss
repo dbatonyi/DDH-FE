@@ -1,0 +1,57 @@
+// Auth card
+
+@mixin auth-card {
+  padding: 40px;
+  margin-left: 12%;
+  min-height: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  background: rgba(236, 236, 236, 0.75);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(236, 236, 236, 0.3);
+}
+
+@mixin button($color, $bgcolor) {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-decoration: none;
+  color: $color;
+  font-size: 16px;
+  font-weight: 600;
+  border: 1px solid rgba(white, 0.6);
+  background-color: $bgcolor;
+  backdrop-filter: blur(2px);
+  border-radius: 0.5rem;
+  box-shadow: 0px calc(6rem / 6) calc(6rem / 3) rgba(black, 0.1);
+
+  transition: transform 500ms ease-out;
+  cursor: pointer;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    background: rgba(white, 0.4);
+    width: 60%;
+    height: 100%;
+    top: 0%;
+    left: -125%;
+
+    transform: skew(45deg);
+
+    position: absolute;
+
+    transition: left 500ms ease-out;
+  }
+
+  &:hover {
+    &::before {
+      left: 150%;
+    }
+  }
+}
