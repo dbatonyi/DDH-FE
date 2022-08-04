@@ -9,6 +9,7 @@ const Task = (props) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
+    const [tags, setTags] = useState([]);
 
     useEffect(getTaskList, []);
 
@@ -19,23 +20,64 @@ const Task = (props) => {
             .then((res) => res.json())
             .then((content) => {
                 setData(content);
+
+                if (content.taskTags.includes(',')) {
+                    const getAllTags = content.taskTags.split(',');
+                    setTags(getAllTags);
+                } else {
+                    setTags([content.taskTags]);
+                }
+
                 setIsLoading(false);
             })
             .catch((err) => console.log(err));
     }
 
+    async function deleteTask() {
+        const response = await fetch(`${configData.SERVER_URL}/api/task/${pid}`, {
+            method: 'DELETE',
+            credentials: 'include'
+        });
+        const data = await response.json();
+        console.log(data);
+
+        if (response.status === 200) {
+            router.push('/task/list');
+        } else {
+            console.log('Error');
+        }
+    }
+
     return (
         <>
-            <h1>This is a task:</h1>
             {isLoading ? (
-                <>Loading...</>
+                <div className='ddh-task-single'>
+                    <div className='ddh-task-single__container'>
+                        <h1>Loading...</h1>
+                    </div>
+                </div>
             ) : (
-                <>
-                    <Link href={`/task/edit/${pid}`}>Edit</Link>
-                    <h1>{data.title}</h1>
-                    <p>{data.taskShort}</p>
-                    <p>{data.taskDescription}</p>
-                </>
+                <div className='ddh-task-single'>
+                    <div className='ddh-task-single__container'>
+                        <div className='ddh-task-single__container--text'>
+                            <h1>{data.title}</h1>
+                            <p>{data.taskShort}</p>
+                            <p>{data.taskDescription}</p>
+                        </div>
+                        <div className='ddh-task-single__container--tags'>
+                            <h2>Tags:</h2>
+                            <ul>
+                                {tags.map((tag) => (
+                                    <li key={tag}>{tag}</li>
+                                ))}
+                            </ul>
+                        </div>
+                        <div className='ddh-task-single__container--btn'>
+                            <Link href={`/task/edit/${pid}`}>Edit</Link>
+                            <button onClick={deleteTask}>Delete</button>
+                        </div>
+                    </div>
+                </div>
             )}
         </>
     );

@@ -34,7 +34,7 @@ const NewTask = (props) => {
             })
         });
 
-        await router.push('/');
+        await router.push('/task/list');
     };
 
     const categoryOptions = [
@@ -43,26 +43,33 @@ const NewTask = (props) => {
     ];
 
     return (
-        <form onSubmit={submit}>
-            <h1>Create new task</h1>
+        <div className='ddh-task'>
+            <div className='ddh-task__container'>
+                <h1>Create new task</h1>
+                <form onSubmit={submit}>
+                    <label htmlFor='title'>Title</label>
+                    <input className='text' name='title' type='text' required />
 
-            <label htmlFor='title'>Title</label>
-            <input className='text' name='title' type='text' required />
+                    <label htmlFor='short'>Task Short</label>
+                    <textarea className='text' name='short' type='textarea' required />
 
-            <label htmlFor='short'>Task Short</label>
-            <textarea className='text' name='short' type='textarea' required />
+                    <label htmlFor='body'>Task Description</label>
+                    <textarea className='text-desc' name='body' type='textarea' required />
 
-            <label htmlFor='body'>Task Description</label>
-            <textarea className='text' name='body' type='textarea' required />
+                    <label htmlFor='category'>Task Category</label>
+                    <Select name='category' options={categoryOptions} />
 
-            <label htmlFor='category'>Task Category</label>
-            <Select name='category' options={categoryOptions} />
+                    <label htmlFor='tag'>Task Tags</label>
+                    <TagsInput value={tag} onChange={setTag} name='tag' placeHolder='enter tags' />
 
-            <label htmlFor='tag'>Task Tags</label>
-            <TagsInput value={tag} onChange={setTag} name='tag' placeHolder='enter tags' />
-
-            <button type='submit'>Save</button>
-        </form>
+                    <div className='submit-btn'>
+                        <button className='btn' type='submit'>
+                            Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     );
 };
 
