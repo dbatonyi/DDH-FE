@@ -127,16 +127,24 @@
         }
       }
 
-      .submit-btn {
+      .form-actions {
         position: absolute;
         width: 100%;
         bottom: 20px;
         left: 0;
+        display: flex;
+        justify-content: flex-end;
+        padding-right: 40px;
 
         button {
+          @include button(white, #576398);
+          width: 20%;
+        }
+
+        a {
           @include button(white, rgba(77, 132, 255, 0.8));
           width: 20%;
-          margin: auto;
+          margin-right: 10px;
         }
       }
     }

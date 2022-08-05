@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { AuthContext } from '../../layouts/Layout';
 import configData from '../../config.json';
+import { DataGrid } from '@mui/x-data-grid';
+var moment = require('moment');
 
 const TaskList = (props) => {
     const router = useRouter();
+    const { setStatusMessage } = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [refreshed, setRefreshed] = useState(false);
-    const [sortTitle, setSortTitle] = useState(false);
-    const [sortCreatedDate, setSortCreatedDate] = useState(null);
-    const [sortUpdatedDate, setSortUpdatedDate] = useState(null);
+    const [selectedId, setSelectedId] = useState(null);
+    const [popupOpen, setPopupOpen] = useState(false);
 
     useEffect(getTaskList, [refreshed]);
 
@@ -27,8 +30,18 @@ const TaskList = (props) => {
             .catch((err) => console.log(err));
     }
 
-    async function deleteTask(pid) {
-        const response = await fetch(`${configData.SERVER_URL}/api/task/${pid}`, {
+    function openPopup(id) {
+        setSelectedId(id);
+        setPopupOpen(true);
+    }
+
+    function closePopup() {
+        setPopupOpen(false);
+        setSelectedId(null);
+    }
+
+    async function deleteTask() {
+        const response = await fetch(`${configData.SERVER_URL}/api/task/${selectedId}`, {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -36,76 +49,64 @@ const TaskList = (props) => {
         console.log(data);
 
         if (response.status === 200) {
+            setStatusMessage(data.message);
             setRefreshed(true);
         } else {
             console.log('Error');
         }
+        setPopupOpen(false);
+        setSelectedId(null);
     }
 
-    function sortTitleByAbc() {
-        const sortedData = data
-            .sort((a, b) => {
-                if (a.taskTitle < b.taskTitle) {
-                    return -1;
-                }
-                if (a.taskTitle > b.taskTitle) {
-                    return 1;
-                }
-                return 0;
-            })
-            .reverse();
-        setSortTitle(!sortTitle);
-
-        setData(sortedData);
-    }
-
-    function sortByCreatedDate() {
-        if (sortCreatedDate === false) {
-            const sortedData = data.slice().sort((a, b) => {
-                return new Date(a.createdAt) > new Date(b.createdAt)
-                    ? 1
-                    : new Date(a.createdAt) < new Date(b.createdAt)
-                    ? -1
-                    : 0;
-            });
-            setData(sortedData);
-        } else {
-            const sortedData = data.slice().sort((a, b) => {
-                return new Date(a.createdAt) > new Date(b.createdAt)
-                    ? -1
-                    : new Date(a.createdAt) < new Date(b.createdAt)
-                    ? 1
-                    : 0;
-            });
-            setData(sortedData);
+    const columns = [
+        {
+            field: 'title',
+            headerName: 'Title',
+            width: 240,
+            renderCell: (params) => (
+                <div className='table-title'>
+                    <Link href={`/task/${params.id}`}>{params.value}</Link>
+                </div>
+            )
+        },
+        { field: 'taskCategory', headerName: 'Category', width: 160 },
+        {
+            field: 'createdAt',
+            headerName: 'Created At',
+            width: 160,
+            valueFormatter: (params) => moment(params?.value).format('YYYY/MM/DD - hh:mm')
+        },
+        {
+            field: 'updatedAt',
+            headerName: 'Updated At',
+            width: 160,
+            valueFormatter: (params) => moment(params?.value).format('YYYY/MM/DD - hh:mm')
+        },
+        {
+            field: 'user',
+            headerName: 'Author',
+            width: 150,
+            valueFormatter: (params) => `${params?.value?.firstname}, ${params?.value?.lastname}`
+        },
+        {
+            field: 'actions',
+            headerName: 'Actions',
+            width: 180,
+            sortable: false,
+            disableColumnMenu: true,
+            renderCell: (params) => (
+                <div className='table-actions'>
+                    <Link href={`/task/edit/${params.id}`}>Edit</Link>
+                    <button
+                        onClick={() => {
+                            openPopup(params.id);
+                        }}>
+                        Delete
+                    </button>
+                </div>
+            )
         }
-
-        setSortCreatedDate(!sortCreatedDate);
-    }
-
-    function sortByUpdatedDate() {
-        if (sortUpdatedDate === false) {
-            const sortedData = data.slice().sort((a, b) => {
-                return new Date(a.updatedAt) > new Date(b.updatedAt)
-                    ? 1
-                    : new Date(a.updatedAt) < new Date(b.updatedAt)
-                    ? -1
-                    : 0;
-            });
-            setData(sortedData);
-        } else {
-            const sortedData = data.slice().sort((a, b) => {
-                return new Date(a.updatedAt) > new Date(b.updatedAt)
-                    ? -1
-                    : new Date(a.updatedAt) < new Date(b.updatedAt)
-                    ? 1
-                    : 0;
-            });
-            setData(sortedData);
-        }
-
-        setSortUpdatedDate(!sortUpdatedDate);
-    }
+    ];
 
     return (
         <>
@@ -121,116 +122,37 @@ const TaskList = (props) => {
                         <div className='ddh-task-list'>
                             <div className='ddh-task-list__container'>
                                 <h1>Task list:</h1>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                <div className='table-title'>
-                                                    Title{' '}
-                                                    <div
-                                                        className='table-title__sort'
-                                                        onClick={() => {
-                                                            sortTitleByAbc();
-                                                        }}>
-                                                        Sort
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th>Category</th>
-                                            <th>
-                                                <div className='table-cdate'>
-                                                    Created At{' '}
-                                                    <div
-                                                        className='table-cdate__sort'
-                                                        onClick={() => {
-                                                            sortByCreatedDate();
-                                                        }}>
-                                                        Sort
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th>
-                                                <div className='table-udate'>
-                                                    Updated At{' '}
-                                                    <div
-                                                        className='table-udate__sort'
-                                                        onClick={() => {
-                                                            sortByUpdatedDate();
-                                                        }}>
-                                                        Sort
-                                                    </div>
-                                                </div>
-                                            </th>
-                                            <th>Author</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {data.map((task, i) => {
-                                            return (
-                                                <tr key={i}>
-                                                    <td>
-                                                        <Link href={`/task/${task.id}`}>
-                                                            {task.title}
-                                                        </Link>
-                                                    </td>
-                                                    <td>
-                                                        <p>{task.taskCategory}</p>
-                                                    </td>
-                                                    <td>
-                                                        <div className='table-date'>
-                                                            <p>
-                                                                {new Date(task.createdAt)
-                                                                    .toISOString()
-                                                                    .slice(0, 10)}
-                                                            </p>
-                                                            <span> - </span>
-                                                            <p>
-                                                                {new Date(task.createdAt)
-                                                                    .toISOString()
-                                                                    .slice(-13, -8)}
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div className='table-date'>
-                                                            <p>
-                                                                {new Date(task.updatedAt)
-                                                                    .toISOString()
-                                                                    .slice(0, 10)}
-                                                            </p>
-                                                            <span> - </span>
-                                                            <p>
-                                                                {new Date(task.updatedAt)
-                                                                    .toISOString()
-                                                                    .slice(-13, -8)}
-                                                            </p>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <p>
-                                                            {task.user.firstname},{' '}
-                                                            {task.user.lastname}
-                                                        </p>
-                                                    </td>
-                                                    <td>
-                                                        <div className='table-actions'>
-                                                            <Link href={`/task/edit/${task.id}`}>
-                                                                Edit
-                                                            </Link>
-                                                            <button
-                                                                onClick={() => {
-                                                                    deleteTask(task.id);
-                                                                }}>
-                                                                Delete
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
+                                <DataGrid
+                                    rows={data}
+                                    columns={columns}
+                                    disableSelectionOnClick
+                                    pageSize={10}
+                                    rowsPerPageOptions={[10]}
+                                />
+                                {popupOpen && (
+                                    <div className='popup-container'>
+                                        <div className='popup-container-box'>
+                                            <h2>Delete Task</h2>
+                                            <p>Are you sure you want to delete this task?</p>
+                                            <div className='popup-actions'>
+                                                <button
+                                                    className='popup-container-box__delete'
+                                                    onClick={() => {
+                                                        deleteTask();
+                                                    }}>
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    className='popup-container-box__close'
+                                                    onClick={() => {
+                                                        closePopup();
+                                                    }}>
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ) : (

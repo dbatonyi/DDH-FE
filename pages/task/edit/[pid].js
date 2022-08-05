@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import TagsInput from 'react-tagsinput';
+import React, { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import TagsInput from 'react-tagsinput';
 import Select from 'react-select';
+import { AuthContext } from '../../../layouts/Layout';
 import configData from '../../../config.json';
 
 const EditTask = (props) => {
     const router = useRouter();
     const { pid } = router.query;
+
+    const { setStatusMessage } = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -66,7 +70,7 @@ const EditTask = (props) => {
     const submit = async (e) => {
         e.preventDefault();
 
-        await fetch(`${configData.SERVER_URL}/api/task/edit/${pid}`, {
+        const response = await fetch(`${configData.SERVER_URL}/api/task/edit/${pid}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -79,6 +83,9 @@ const EditTask = (props) => {
                 updateAt: new Date()
             })
         });
+        const data = await response.json();
+        console.log(data);
+        setStatusMessage(data.message);
 
         await router.push('/task/list');
     };
@@ -147,7 +154,8 @@ const EditTask = (props) => {
                                 placeHolder='enter tags'
                             />
 
-                            <div className='submit-btn'>
+                            <div className='form-actions'>
+                                <Link href='/task/list'>Cancel</Link>
                                 <button className='btn' type='submit'>
                                     Save
                                 </button>

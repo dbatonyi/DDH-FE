@@ -76,3 +76,22 @@ a {
     transform: rotate(360deg);
   }
 }
+
+.ddh-system-message {
+  position: absolute;
+  top: 5%;
+  left: 37%;
+  width: 500px;
+  text-align: center;
+  display: flex;
+  padding: 10px 20px;
+  background-color: rgba(77, 132, 255, 0.8);
+  color: white;
+  font-weight: 600;
+  border-radius: 16px;
+
+  &--close {
+    margin-left: auto;
+    cursor: pointer;
+  }
+}

@@ -73,76 +73,6 @@ const TaskManagerForm = (props) => {
         }
     }, [packages]);
 
-    // Form - checkbox handlers
-
-    const handleBlogChange = () => {
-        setBlogChecked(!blogChecked);
-    };
-
-    const handleWebshopChange = () => {
-        setWebshopChecked(!webshopChecked);
-    };
-
-    const handleCustomWebshopChange = () => {
-        setCustomWebshopChecked(!customWebshopChecked);
-    };
-
-    const handleCustomerRegistrationChange = () => {
-        setCustomerRegistrationChecked(!customerRegistrationChecked);
-    };
-
-    const handleUniqueProductVariationChange = () => {
-        setUniqueProductVariationChecked(!uniqueProductVariationChecked);
-    };
-
-    const handleInvoiceSystemChange = () => {
-        setInvoiceSystemChecked(!invoiceSystemChecked);
-    };
-
-    const handleStockManagementChange = () => {
-        setStockManagementChecked(!stockManagementChecked);
-    };
-
-    const handleStockUpdateChange = () => {
-        setStockUpdateChecked(!stockUpdateChecked);
-    };
-
-    const handleAdditionalCurrenciesChange = () => {
-        setAdditionalCurrenciesChecked(!additionalCurrenciesChecked);
-    };
-
-    const handleAdditionalVatChange = () => {
-        setAdditionalVatChecked(!additionalVatChecked);
-    };
-
-    const handleCouponSystemChange = () => {
-        setCouponSystemChecked(!couponSystemChecked);
-    };
-
-    const handleProductFiltersChange = () => {
-        setProductFiltersChecked(!productFiltersChecked);
-    };
-
-    const handleProductPagesChange = () => {
-        setProductPagesChecked(!productPagesChecked);
-    };
-
-    const handleExtraElementsChange = () => {
-        setExtraElementsChecked(!extraElementsChecked);
-    };
-
-    const handleFlexibleLayoutChange = () => {
-        setFlexibleLayoutChecked(!flexibleLayoutChecked);
-    };
-
-    const handleUniqueDesignChange = () => {
-        setUniqueDesignChecked(!uniqueDesignChecked);
-    };
-
-    const handleUniqueEmailChange = () => {
-        setUniqueEmailChecked(!uniqueEmailChecked);
-    };
-
     // Select-list options
 
     const dUpdateOptions = [
@@ -226,7 +156,7 @@ const TaskManagerForm = (props) => {
         const uniqueEmail = uniqueEmailChecked ? 'yes' : 'no';
         const extraFeatures = formData.get('extra-features');
 
-        await fetch(`${configData.SERVER_URL}/api/tmf-form`, {
+        const response = await fetch(`${configData.SERVER_URL}/api/tmf-form`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -272,6 +202,8 @@ const TaskManagerForm = (props) => {
                 extraFeatures
             })
         });
+        const data = await response.json();
+        authContext.setStatusMessage(data.message);
 
         await router.push('/dashboard');
     };
@@ -335,7 +267,7 @@ const TaskManagerForm = (props) => {
                                 <input
                                     type='checkbox'
                                     checked={blogChecked}
-                                    onChange={handleBlogChange}
+                                    onChange={() => setBlogChecked(!blogChecked)}
                                 />
                                 Blog
                             </label>
@@ -343,7 +275,7 @@ const TaskManagerForm = (props) => {
                                 <input
                                     type='checkbox'
                                     checked={webshopChecked}
-                                    onChange={handleWebshopChange}
+                                    onChange={() => setWebshopChecked(!webshopChecked)}
                                 />
                                 Webshop
                             </label>
@@ -392,7 +324,9 @@ const TaskManagerForm = (props) => {
                                         <input
                                             type='checkbox'
                                             checked={customWebshopChecked}
-                                            onChange={handleCustomWebshopChange}
+                                            onChange={() =>
+                                                setCustomWebshopChecked(!customWebshopChecked)
+                                            }
                                         />
                                         Custom Webshop
                                     </label>
@@ -403,7 +337,11 @@ const TaskManagerForm = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     checked={customerRegistrationChecked}
-                                                    onChange={handleCustomerRegistrationChange}
+                                                    onChange={() =>
+                                                        setCustomerRegistrationChecked(
+                                                            !customerRegistrationChecked
+                                                        )
+                                                    }
                                                 />
                                                 Customer registration
                                             </label>
@@ -412,7 +350,11 @@ const TaskManagerForm = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     checked={uniqueProductVariationChecked}
-                                                    onChange={handleUniqueProductVariationChange}
+                                                    onChange={() =>
+                                                        setUniqueProductVariationChecked(
+                                                            !uniqueProductVariationChecked
+                                                        )
+                                                    }
                                                 />
                                                 Unique product variations
                                             </label>
@@ -434,7 +376,11 @@ const TaskManagerForm = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     checked={invoiceSystemChecked}
-                                                    onChange={handleInvoiceSystemChange}
+                                                    onChange={() =>
+                                                        setInvoiceSystemChecked(
+                                                            !invoiceSystemChecked
+                                                        )
+                                                    }
                                                 />
                                                 Invoice system integration
                                             </label>
@@ -443,7 +389,11 @@ const TaskManagerForm = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     checked={stockManagementChecked}
-                                                    onChange={handleStockManagementChange}
+                                                    onChange={() =>
+                                                        setStockManagementChecked(
+                                                            !stockManagementChecked
+                                                        )
+                                                    }
                                                 />
                                                 Automatic stock management
                                             </label>
@@ -452,7 +402,9 @@ const TaskManagerForm = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     checked={stockUpdateChecked}
-                                                    onChange={handleStockUpdateChange}
+                                                    onChange={() =>
+                                                        setStockUpdateChecked(!stockUpdateChecked)
+                                                    }
                                                 />
                                                 Stock updates via importing from spreadsheets
                                             </label>
@@ -461,7 +413,11 @@ const TaskManagerForm = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     checked={additionalCurrenciesChecked}
-                                                    onChange={handleAdditionalCurrenciesChange}
+                                                    onChange={() =>
+                                                        setAdditionalCurrenciesChecked(
+                                                            !additionalCurrenciesChecked
+                                                        )
+                                                    }
                                                 />
                                                 Additional currencies
                                             </label>
@@ -483,7 +439,11 @@ const TaskManagerForm = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     checked={additionalVatChecked}
-                                                    onChange={handleAdditionalVatChange}
+                                                    onChange={() =>
+                                                        setAdditionalVatChecked(
+                                                            !additionalVatChecked
+                                                        )
+                                                    }
                                                 />
                                                 Additional VAT rates
                                             </label>
@@ -505,7 +465,9 @@ const TaskManagerForm = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     checked={couponSystemChecked}
-                                                    onChange={handleCouponSystemChange}
+                                                    onChange={() =>
+                                                        setCouponSystemChecked(!couponSystemChecked)
+                                                    }
                                                 />
                                                 Coupon system implementation
                                             </label>
@@ -514,7 +476,11 @@ const TaskManagerForm = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     checked={productFiltersChecked}
-                                                    onChange={handleProductFiltersChange}
+                                                    onChange={() =>
+                                                        setProductFiltersChecked(
+                                                            !productFiltersChecked
+                                                        )
+                                                    }
                                                 />
                                                 Additional product filters
                                             </label>
@@ -536,7 +502,9 @@ const TaskManagerForm = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     checked={productPagesChecked}
-                                                    onChange={handleProductPagesChange}
+                                                    onChange={() =>
+                                                        setProductPagesChecked(!productPagesChecked)
+                                                    }
                                                 />
                                                 Unique product pages
                                             </label>
@@ -560,7 +528,9 @@ const TaskManagerForm = (props) => {
                                         <input
                                             type='checkbox'
                                             checked={extraElementsChecked}
-                                            onChange={handleExtraElementsChange}
+                                            onChange={() =>
+                                                setExtraElementsChecked(!extraElementsChecked)
+                                            }
                                         />
                                         Extra layout elements
                                     </label>
@@ -584,7 +554,9 @@ const TaskManagerForm = (props) => {
                                         <input
                                             type='checkbox'
                                             checked={flexibleLayoutChecked}
-                                            onChange={handleFlexibleLayoutChange}
+                                            onChange={() =>
+                                                setFlexibleLayoutChecked(!flexibleLayoutChecked)
+                                            }
                                         />
                                         Flexible layout
                                     </label>
@@ -593,7 +565,9 @@ const TaskManagerForm = (props) => {
                                         <input
                                             type='checkbox'
                                             checked={uniqueDesignChecked}
-                                            onChange={handleUniqueDesignChange}
+                                            onChange={() =>
+                                                setUniqueDesignChecked(!uniqueDesignChecked)
+                                            }
                                         />
                                         Unique design
                                     </label>
@@ -607,7 +581,9 @@ const TaskManagerForm = (props) => {
                                                 <input
                                                     type='checkbox'
                                                     checked={uniqueEmailChecked}
-                                                    onChange={handleUniqueEmailChange}
+                                                    onChange={() =>
+                                                        setUniqueEmailChecked(!uniqueEmailChecked)
+                                                    }
                                                 />
                                                 Unique email templates
                                             </label>

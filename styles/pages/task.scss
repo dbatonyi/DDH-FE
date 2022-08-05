@@ -52,5 +52,44 @@
         @include button(white, rgba(255, 77, 77, 0.8));
       }
     }
+
+    .popup-container {
+      position: absolute;
+      top: 20%;
+      left: 18%;
+      width: 65%;
+      height: 60%;
+      background: rgba(236, 236, 236, 1);
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+
+      &-box {
+        height: 100%;
+
+        h2 {
+          font-size: 40px;
+        }
+
+        .popup-actions {
+          display: flex;
+          flex-wrap: wrap;
+          margin-top: 60px;
+        }
+
+        &__delete {
+          @include button(white, rgba(255, 77, 77, 0.8));
+          width: 47%;
+          margin-right: 10px;
+        }
+
+        &__close {
+          @include button(white, rgba(77, 132, 255, 0.8));
+          width: 47%;
+        }
+      }
+    }
   }
 }

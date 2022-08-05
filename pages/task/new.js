@@ -20,7 +20,7 @@ const NewTask = (props) => {
         const body = formData.get('body');
         const category = formData.get('category');
 
-        await fetch(`${configData.SERVER_URL}/api/task/new`, {
+        const response = await fetch(`${configData.SERVER_URL}/api/task/new`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -33,7 +33,8 @@ const NewTask = (props) => {
                 userUuid: authContext.userInfo.uuid
             })
         });
-
+        const data = await response.json();
+        authContext.setStatusMessage(data.message);
         await router.push('/task/list');
     };
 

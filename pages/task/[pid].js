@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { AuthContext } from '../../layouts/Layout';
 import configData from '../../config.json';
 
 const Task = (props) => {
     const router = useRouter();
     const { pid } = router.query;
 
+    const { setStatusMessage } = useContext(AuthContext);
+
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [tags, setTags] = useState([]);
+    const [selectedId, setSelectedId] = useState(null);
+    const [popupOpen, setPopupOpen] = useState(false);
 
     useEffect(getTaskList, []);
 
@@ -33,8 +38,18 @@ const Task = (props) => {
             .catch((err) => console.log(err));
     }
 
+    function openPopup(id) {
+        setSelectedId(id);
+        setPopupOpen(true);
+    }
+
+    function closePopup() {
+        setPopupOpen(false);
+        setSelectedId(null);
+    }
+
     async function deleteTask() {
-        const response = await fetch(`${configData.SERVER_URL}/api/task/${pid}`, {
+        const response = await fetch(`${configData.SERVER_URL}/api/task/${selectedId}`, {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -42,10 +57,13 @@ const Task = (props) => {
         console.log(data);
 
         if (response.status === 200) {
+            setStatusMessage(data.message);
             router.push('/task/list');
         } else {
             console.log('Error');
         }
+        setPopupOpen(false);
+        setSelectedId(null);
     }
 
     return (
@@ -74,8 +92,37 @@ const Task = (props) => {
                         </div>
                         <div className='ddh-task-single__container--btn'>
                             <Link href={`/task/edit/${pid}`}>Edit</Link>
-                            <button onClick={deleteTask}>Delete</button>
+                            <button
+                                onClick={() => {
+                                    openPopup(pid);
+                                }}>
+                                Delete
+                            </button>
                         </div>
+                        {popupOpen && (
+                            <div className='popup-container'>
+                                <div className='popup-container-box'>
+                                    <h2>Delete Task</h2>
+                                    <p>Are you sure you want to delete this task?</p>
+                                    <div className='popup-actions'>
+                                        <button
+                                            className='popup-container-box__delete'
+                                            onClick={() => {
+                                                deleteTask();
+                                            }}>
+                                            Yes
+                                        </button>
+                                        <button
+                                            className='popup-container-box__close'
+                                            onClick={() => {
+                                                closePopup();
+                                            }}>
+                                            No
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             )}

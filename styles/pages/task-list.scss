@@ -18,74 +18,100 @@
       width: 100%;
     }
 
-    table {
-      width: 100%;
+    .MuiDataGrid-root {
+      border: none;
+    }
 
-      td,
-      th {
-        border: 1px solid white;
-        padding: 10px;
-        text-align: left;
+    .MuiDataGrid-main {
+      min-height: 650px;
+      border: none;
+
+      .MuiDataGrid-columnHeaders {
+        border-color: white;
+        font-size: 18px;
+        font-weight: bold;
       }
 
-      thead tr {
-        th:nth-child(2) {
-          width: 10%;
-        }
-
-        th:nth-child(3),
-        th:nth-child(4) {
-          width: 16%;
-        }
-
-        th:nth-child(5) {
-          width: 15%;
-        }
+      .MuiDataGrid-iconSeparator {
+        color: white;
       }
 
-      tbody tr {
-        td:first-child {
-          a {
-            color: rgba(77, 132, 255, 1);
-            font-weight: 600;
+      .MuiDataGrid-cell {
+        border-color: white;
+      }
 
-            &:hover {
-              text-decoration: underline;
-            }
-          }
-        }
+      .MuiDataGrid-columnHeaderTitle {
+        font-weight: 600;
+      }
 
-        td:nth-child(2) {
+      .MuiDataGrid-row {
+        .MuiDataGrid-cell:nth-child(2) {
           text-transform: capitalize;
         }
+      }
 
-        td:last-child {
-          .table-actions {
-            display: flex;
-            flex-wrap: wrap;
+      .table-title {
+        a {
+          color: rgba(77, 132, 255, 1);
+          font-weight: 600;
 
-            a:first-child {
-              margin-right: 10px;
-              @include button(white, rgba(77, 132, 255, 0.8));
-              width: 47%;
-            }
-
-            button {
-              @include button(white, rgba(255, 77, 77, 0.8));
-              width: 47%;
-            }
+          &:hover {
+            color: rgba(77, 132, 255, 0.8);
+            text-decoration: underline;
           }
         }
       }
-
-      .table-date {
+      .table-actions {
         display: flex;
-        justify-content: flex-start;
-        margin: auto;
-        align-items: center;
+        justify-content: space-between;
+        width: 100%;
 
-        span {
-          padding: 0 4px;
+        a {
+          @include button(white, rgba(77, 132, 255, 0.8));
+          margin-right: 10px;
+        }
+
+        button {
+          @include button(white, rgba(255, 77, 77, 0.8));
+        }
+      }
+    }
+
+    .popup-container {
+      position: absolute;
+      top: 20%;
+      left: 18%;
+      width: 65%;
+      height: 35%;
+      background: rgba(236, 236, 236, 1);
+      border-radius: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+
+      &-box {
+        height: 100%;
+
+        h2 {
+          font-size: 40px;
+        }
+
+        .popup-actions {
+          display: flex;
+          flex-wrap: wrap;
+          margin-top: 60px;
+        }
+
+        &__delete {
+          @include button(white, rgba(255, 77, 77, 0.8));
+          width: 47%;
+          margin-right: 10px;
+        }
+
+        &__close {
+          @include button(white, rgba(77, 132, 255, 0.8));
+          width: 47%;
         }
       }
     }

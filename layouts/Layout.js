@@ -14,12 +14,21 @@ const Layout = (props) => {
     const [auth, setAuth] = useState(false);
     const [authFailed, setAuthFailed] = useState(false);
     const [userInfo, setUserInfo] = useState({});
+    const [statusMessage, setStatusMessage] = useState(null);
 
     useEffect(authentication, [router.route]);
 
     useEffect(() => {
         setAuthFailed(false);
     }, [router.route]);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setStatusMessage(null);
+        }, 10000);
+
+        return () => clearTimeout(timeout);
+    }, [statusMessage]);
 
     function authentication() {
         fetch(`${configData.SERVER_URL}/api/user`, {
@@ -92,6 +101,7 @@ const Layout = (props) => {
                         auth,
                         authFailed,
                         userInfo,
+                        setStatusMessage,
                         actions: {
                             logout,
                             login
@@ -106,7 +116,23 @@ const Layout = (props) => {
 
                         <Navbar auth={auth} onLogout={logout} />
 
-                        <main className='ddh-main'>{props.children}</main>
+                        <main className='ddh-main'>
+                            {props.children}
+                            {statusMessage ? (
+                                <div className='ddh-system-message'>
+                                    <div className='ddh-system-message--message'>
+                                        {statusMessage}
+                                    </div>
+                                    <div
+                                        className='ddh-system-message--close'
+                                        onClick={() => {
+                                            setStatusMessage(null);
+                                        }}>
+                                        X
+                                    </div>
+                                </div>
+                            ) : null}
+                        </main>
                     </div>
                 </AuthContext.Provider>
             )}
