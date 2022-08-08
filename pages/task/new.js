@@ -62,13 +62,12 @@ const NewTask = (props) => {
 
                     <label htmlFor='tag'>Task Tags</label>
                     <TagsInput value={tag} onChange={setTag} name='tag' placeHolder='enter tags' />
-
-                    <div className='submit-btn'>
-                        <button className='btn' type='submit'>
-                            Save
-                        </button>
-                    </div>
                 </form>
+                <div className='submit-btn'>
+                    <button className='btn' type='submit'>
+                        Save
+                    </button>
+                </div>
             </div>
         </div>
     );

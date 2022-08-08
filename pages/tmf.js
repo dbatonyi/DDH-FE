@@ -12,9 +12,11 @@ const TaskManagerForm = (props) => {
     const [dUpdate, setDUpdate] = useState(null);
     const [ourServer, setOurServer] = useState(null);
     const [dVersion, setDVersion] = useState(null);
+    const [migrationChecked, setMigrationChecked] = useState(false);
     const [packages, setPackages] = useState(null);
     const [blogChecked, setBlogChecked] = useState(false);
     const [webshopChecked, setWebshopChecked] = useState(false);
+    const [moreLanguageChecked, setMoreLanguageChecked] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState(null);
     const [currency, setCurrency] = useState(null);
     const [customWebshopChecked, setCustomWebshopChecked] = useState(false);
@@ -39,6 +41,7 @@ const TaskManagerForm = (props) => {
     useEffect(() => {
         setBlogChecked(false);
         setWebshopChecked(false);
+        setMoreLanguageChecked(false);
         setPaymentMethod(null);
         setCurrency(null);
         setCustomWebshopChecked(false);
@@ -124,9 +127,12 @@ const TaskManagerForm = (props) => {
         const oldUrl = formData.get('old-url');
         const oldSsh = formData.get('old-ssh');
         const dVersion = formData.get('d-version');
+        const migration = migrationChecked ? 'yes' : 'no';
         const packages = formData.get('packages');
         const blog = blogChecked ? 'yes' : 'no';
         const webshop = webshopChecked ? 'yes' : 'no';
+        const moreLanguage = moreLanguageChecked ? 'yes' : 'no';
+        const otherLanguage = formData.get('other-language');
         const paymentMethod = formData.get('payment-method');
         const paymentMethodOther = formData.get('payment-method-other');
         const currency = formData.get('currency');
@@ -169,9 +175,12 @@ const TaskManagerForm = (props) => {
                 oldUrl,
                 oldSsh,
                 dVersion,
+                migration,
                 packages,
                 blog,
                 webshop,
+                moreLanguage,
+                otherLanguage,
                 paymentMethod,
                 paymentMethodOther,
                 currency,
@@ -211,7 +220,7 @@ const TaskManagerForm = (props) => {
     return (
         <div className='ddh-tmf'>
             <div className='ddh-tmf__container'>
-                <h1>Create Meistertask task</h1>
+                <h1>Create Trello task</h1>
                 <form
                     onSubmit={submit}
                     className={
@@ -254,6 +263,14 @@ const TaskManagerForm = (props) => {
                                 options={dVersionOptions}
                                 onChange={setDVersion}
                             />
+                            <label>
+                                <input
+                                    type='checkbox'
+                                    checked={migrationChecked}
+                                    onChange={() => setMigrationChecked(!migrationChecked)}
+                                />
+                                Content migration
+                            </label>
                         </>
                     )}
 
@@ -263,6 +280,24 @@ const TaskManagerForm = (props) => {
                     {packages && (
                         <div className='form-packages-container'>
                             <h2>Customize your package</h2>
+                            <label>
+                                <input
+                                    type='checkbox'
+                                    checked={moreLanguageChecked}
+                                    onChange={() => setMoreLanguageChecked(!moreLanguageChecked)}
+                                />
+                                More Language
+                            </label>
+                            {moreLanguageChecked && (
+                                <>
+                                    <label htmlFor='language-other'>Other Languages</label>
+                                    <textarea
+                                        className='text'
+                                        name='Language-other'
+                                        type='textarea'
+                                    />
+                                </>
+                            )}
                             <label>
                                 <input
                                     type='checkbox'
