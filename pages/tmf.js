@@ -79,13 +79,13 @@ const TaskManagerForm = (props) => {
     // Select-list options
 
     const dUpdateOptions = [
-        { value: 'yes', label: 'Yes' },
-        { value: 'no', label: 'No' }
+        { value: true, label: 'Yes' },
+        { value: false, label: 'No' }
     ];
 
     const ourServerOptions = [
-        { value: 'yes', label: 'Yes' },
-        { value: 'no', label: 'No' }
+        { value: true, label: 'Yes' },
+        { value: false, label: 'No' }
     ];
 
     const dVersionOptions = [
@@ -127,39 +127,39 @@ const TaskManagerForm = (props) => {
         const oldUrl = formData.get('old-url');
         const oldSsh = formData.get('old-ssh');
         const dVersion = formData.get('d-version');
-        const migration = migrationChecked ? 'yes' : 'no';
+        const migration = migrationChecked ? true : false;
         const packages = formData.get('packages');
-        const blog = blogChecked ? 'yes' : 'no';
-        const webshop = webshopChecked ? 'yes' : 'no';
-        const moreLanguage = moreLanguageChecked ? 'yes' : 'no';
+        const blog = blogChecked ? true : false;
+        const webshop = webshopChecked ? true : false;
+        const moreLanguage = moreLanguageChecked ? true : false;
         const otherLanguage = formData.get('other-language');
         const paymentMethod = formData.get('payment-method');
         const paymentMethodOther = formData.get('payment-method-other');
         const currency = formData.get('currency');
         const currencyOther = formData.get('currency-other');
-        const customWebshop = customWebshopChecked ? 'yes' : 'no';
-        const customerRegistration = customerRegistrationChecked ? 'yes' : 'no';
-        const uniqueProductVariation = uniqueProductVariationChecked ? 'yes' : 'no';
+        const customWebshop = customWebshopChecked ? true : false;
+        const customerRegistration = customerRegistrationChecked ? true : false;
+        const uniqueProductVariation = uniqueProductVariationChecked ? true : false;
         const upvAdditional = formData.get('upv-additional');
-        const invoiceSystem = invoiceSystemChecked ? 'yes' : 'no';
-        const stockManagement = stockManagementChecked ? 'yes' : 'no';
-        const stockUpdate = stockUpdateChecked ? 'yes' : 'no';
-        const additionalCurrencies = additionalCurrenciesChecked ? 'yes' : 'no';
+        const invoiceSystem = invoiceSystemChecked ? true : false;
+        const stockManagement = stockManagementChecked ? true : false;
+        const stockUpdate = stockUpdateChecked ? true : false;
+        const additionalCurrencies = additionalCurrenciesChecked ? true : false;
         const additionalCurrenciesOther = formData.get('additional-currencies');
-        const additionalVat = additionalVatChecked ? 'yes' : 'no';
+        const additionalVat = additionalVatChecked ? true : false;
         const additionalVatOther = formData.get('additional-vat');
-        const couponSystem = couponSystemChecked ? 'yes' : 'no';
-        const productFilters = productFiltersChecked ? 'yes' : 'no';
+        const couponSystem = couponSystemChecked ? true : false;
+        const productFilters = productFiltersChecked ? true : false;
         const additonalFilters = formData.get('additional-filters');
-        const productPages = productPagesChecked ? 'yes' : 'no';
+        const productPages = productPagesChecked ? true : false;
         const additionalPages = formData.get('additional-pages');
         const webshopFeatures = formData.get('webshop-features');
-        const extraElements = extraElementsChecked ? 'yes' : 'no';
+        const extraElements = extraElementsChecked ? true : false;
         const extraElementsOther = formData.get('extra-elements');
-        const flexibleLayout = flexibleLayoutChecked ? 'yes' : 'no';
-        const uniqueDesign = uniqueDesignChecked ? 'yes' : 'no';
+        const flexibleLayout = flexibleLayoutChecked ? true : false;
+        const uniqueDesign = uniqueDesignChecked ? true : false;
         const uniqueDesignUrl = formData.get('unique-design-url');
-        const uniqueEmail = uniqueEmailChecked ? 'yes' : 'no';
+        const uniqueEmail = uniqueEmailChecked ? true : false;
         const extraFeatures = formData.get('extra-features');
 
         const response = await fetch(`${configData.SERVER_URL}/api/tmf-form`, {
