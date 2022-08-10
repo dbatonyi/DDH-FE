@@ -16,7 +16,11 @@ const Task = (props) => {
     const [selectedId, setSelectedId] = useState(null);
     const [popupOpen, setPopupOpen] = useState(false);
 
-    useEffect(getTaskList, []);
+    useEffect(() => {
+        if (!router.isReady) return;
+
+        getTaskList();
+    }, [router.isReady]);
 
     function getTaskList() {
         fetch(`${configData.SERVER_URL}/api/task/${pid}`, {

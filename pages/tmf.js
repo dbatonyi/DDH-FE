@@ -125,7 +125,6 @@ const TaskManagerForm = (props) => {
         const dUpdate = formData.get('d-update');
         const ourServer = formData.get('our-server');
         const oldUrl = formData.get('old-url');
-        const oldSsh = formData.get('old-ssh');
         const dVersion = formData.get('d-version');
         const migration = migrationChecked ? true : false;
         const packages = formData.get('packages');
@@ -152,7 +151,6 @@ const TaskManagerForm = (props) => {
         const productFilters = productFiltersChecked ? true : false;
         const additonalFilters = formData.get('additional-filters');
         const productPages = productPagesChecked ? true : false;
-        const additionalPages = formData.get('additional-pages');
         const webshopFeatures = formData.get('webshop-features');
         const extraElements = extraElementsChecked ? true : false;
         const extraElementsOther = formData.get('extra-elements');
@@ -173,7 +171,6 @@ const TaskManagerForm = (props) => {
                 dUpdate,
                 ourServer,
                 oldUrl,
-                oldSsh,
                 dVersion,
                 migration,
                 packages,
@@ -200,7 +197,6 @@ const TaskManagerForm = (props) => {
                 productFilters,
                 additonalFilters,
                 productPages,
-                additionalPages,
                 webshopFeatures,
                 extraElements,
                 extraElementsOther,
@@ -223,9 +219,7 @@ const TaskManagerForm = (props) => {
                 <h1>Create Trello task</h1>
                 <form
                     onSubmit={submit}
-                    className={
-                        (dUpdate && dUpdate.value === 'yes') || packages ? 'scrollable' : ''
-                    }>
+                    className={(dUpdate && dUpdate.value === true) || packages ? 'scrollable' : ''}>
                     <label htmlFor='title'>Task title</label>
                     <input className='text' name='title' type='text' required />
 
@@ -238,7 +232,7 @@ const TaskManagerForm = (props) => {
                     <label htmlFor='d-update'>Drupal update</label>
                     <Select name='d-update' options={dUpdateOptions} onChange={setDUpdate} />
 
-                    {dUpdate && dUpdate.value === 'yes' && (
+                    {dUpdate && dUpdate.value === true && (
                         <>
                             <label htmlFor='our-server'>Is it on our server?</label>
                             <Select
@@ -247,13 +241,10 @@ const TaskManagerForm = (props) => {
                                 onChange={setOurServer}
                             />
 
-                            {ourServer && ourServer.value === 'no' && (
+                            {ourServer && ourServer.value === false && (
                                 <>
                                     <label htmlFor='old-url'>Old-site url</label>
                                     <input className='text' name='old-url' type='text' />
-
-                                    <label htmlFor='old-ssh'>Old-site SSH</label>
-                                    <textarea className='text' name='old-ssh' type='textarea' />
                                 </>
                             )}
 
