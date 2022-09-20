@@ -1,6 +1,6 @@
 {
   "name": "ddh_fe",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,10 +13,12 @@
     "@emotion/styled": "^11.10.0",
     "@mui/material": "^5.9.3",
     "@mui/x-data-grid": "^5.15.1",
+    "final-form": "^4.20.7",
     "moment": "^2.29.4",
     "next": "12.1.5",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "react-final-form": "^6.5.9",
     "react-select": "^5.3.2",
     "react-tagsinput": "^3.19.0",
     "sass": "^1.54.0"
