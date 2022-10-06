@@ -16,7 +16,13 @@ const TaskManagerForm = (props) => {
     const [formState, setFormState] = useState({});
     const formRef = new useRef(null);
 
-    // Form useEffects
+    const userRole = authContext.userInfo.role;
+
+    useEffect(() => {
+        if (userRole.includes('User')) {
+            router.push('/');
+        }
+    }, []);
 
     // Select-list options
 
@@ -64,7 +70,7 @@ const TaskManagerForm = (props) => {
     const newSubmit = async (values) => {
         console.log(values);
 
-        const response = await fetch(`${configData.SERVER_URL}/api/tmf-form`, {
+        const response = await fetch(`${configData.serverUrl}/api/tmf-form`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -78,403 +84,428 @@ const TaskManagerForm = (props) => {
     return (
         <div className='ddh-tmf'>
             <div className='ddh-tmf__container'>
-                <h1>Create Trello task</h1>
-                <Form
-                    onChange={updateFromState}
-                    onSubmit={newSubmit}
-                    render={({ handleSubmit, values }) => (
-                        <form
-                            onSubmit={handleSubmit}
-                            className={
-                                (values.dUpdate && values.dUpdate.value === true) ||
-                                values.packages?.value
-                                    ? 'scrollable'
-                                    : ''
-                            }>
-                            <pre>{JSON.stringify(values, {}, 4)}</pre>
-                            <label htmlFor='title'>Task title</label>
-                            <Field
-                                component='input'
-                                className='text'
-                                name='title'
-                                type='text'
-                                required
-                            />
-                            <label htmlFor='devUrl'>Dev-site url</label>
-                            <Field
-                                component='input'
-                                className='text'
-                                name='devUrl'
-                                type='text'
-                                required
-                            />
-                            <label htmlFor='devSsh'>Dev-site SSH</label>
-                            <Field
-                                component='textarea'
-                                className='text'
-                                name='devSsh'
-                                type='textarea'
-                            />
-                            <label htmlFor='dUpdate'>Drupal update</label>
-                            <Field
-                                name='dUpdate'
-                                options={dUpdateOptions}
-                                component={ReactSelectAdapter}
-                            />
-                            {values.dUpdate && values.dUpdate?.value && (
-                                <>
-                                    <label htmlFor='ourServer'>Is it on our server?</label>
+                {!userRole.includes('User') ? (
+                    <>
+                        <h1>Create Trello task</h1>
+                        <Form
+                            onChange={updateFromState}
+                            onSubmit={newSubmit}
+                            render={({ handleSubmit, values }) => (
+                                <form
+                                    onSubmit={handleSubmit}
+                                    className={
+                                        (values.dUpdate && values.dUpdate.value === true) ||
+                                        values.packages?.value
+                                            ? 'scrollable'
+                                            : ''
+                                    }>
+                                    <pre>{JSON.stringify(values, {}, 4)}</pre>
+                                    <label htmlFor='title'>Task title</label>
                                     <Field
-                                        name='ourServer'
-                                        options={ourServerOptions}
+                                        component='input'
+                                        className='text'
+                                        name='title'
+                                        type='text'
+                                        required
+                                    />
+                                    <label htmlFor='devUrl'>Dev-site url</label>
+                                    <Field
+                                        component='input'
+                                        className='text'
+                                        name='devUrl'
+                                        type='text'
+                                        required
+                                    />
+                                    <label htmlFor='devSsh'>Dev-site SSH</label>
+                                    <Field
+                                        component='textarea'
+                                        className='text'
+                                        name='devSsh'
+                                        type='textarea'
+                                    />
+                                    <label htmlFor='dUpdate'>Drupal update</label>
+                                    <Field
+                                        name='dUpdate'
+                                        options={dUpdateOptions}
                                         component={ReactSelectAdapter}
                                     />
-
-                                    {values.ourServer && values.ourServer.value === false && (
+                                    {values.dUpdate && values.dUpdate?.value && (
                                         <>
-                                            <label htmlFor='oldUrl'>Old-site url</label>
+                                            <label htmlFor='ourServer'>Is it on our server?</label>
                                             <Field
-                                                component='input'
-                                                className='text'
-                                                name='oldUrl'
-                                                type='text'
-                                            />
-                                        </>
-                                    )}
-
-                                    <label htmlFor='dVersion'>From what version?</label>
-                                    <Field
-                                        name='dVersion'
-                                        options={dVersionOptions}
-                                        component={ReactSelectAdapter}
-                                    />
-                                    <label>
-                                        <Field name={'migration'} component={CheckboxAdapter} />
-                                        Content migration
-                                    </label>
-                                </>
-                            )}
-                            <label htmlFor='packages'>Packages *Company specific*</label>
-                            <Field
-                                name='packages'
-                                options={packagesOptions}
-                                component={ReactSelectAdapter}
-                            />
-                            {values.packages && (
-                                <div className='form-packages-container'>
-                                    <h2>Customize your package</h2>
-                                    <label>
-                                        <Field name={'moreLanguage'} component={CheckboxAdapter} />
-                                        More Language
-                                    </label>
-                                    {values.moreLanguage && (
-                                        <>
-                                            <label htmlFor='otherLanguage'>Other Languages</label>
-                                            <Field
-                                                component='textarea'
-                                                className='text'
-                                                name='otherLanguage'
-                                                type='textarea'
-                                            />
-                                        </>
-                                    )}
-                                    <label>
-                                        <Field name={'blog'} component={CheckboxAdapter} />
-                                        Blog
-                                    </label>
-                                    <label>
-                                        <Field name={'webshop'} component={CheckboxAdapter} />
-                                        Webshop
-                                    </label>
-
-                                    {values.webshop && (
-                                        <>
-                                            <label htmlFor='paymentMethod'>Payment method</label>
-                                            <Field
-                                                name='paymentMethod'
-                                                options={paymentMethodOptions}
+                                                name='ourServer'
+                                                options={ourServerOptions}
                                                 component={ReactSelectAdapter}
                                             />
 
-                                            {values.paymentMethod &&
-                                                values.paymentMethod.value === 'other' && (
-                                                    <>
-                                                        <label htmlFor='paymentMethodOther'>
-                                                            Other payment method
-                                                        </label>
-                                                        <Field
-                                                            component='input'
-                                                            className='text'
-                                                            name='paymentMethodOther'
-                                                            type='text'
-                                                        />
-                                                    </>
-                                                )}
-
-                                            <label htmlFor='currency'>Currency</label>
-                                            <Field
-                                                name='currency'
-                                                options={currencyOptions}
-                                                component={ReactSelectAdapter}
-                                            />
-
-                                            {values.currency && values.currency.value === 'other' && (
+                                            {values.ourServer && values.ourServer.value === false && (
                                                 <>
-                                                    <label htmlFor='currencyOther'>
-                                                        Other currency
-                                                    </label>
+                                                    <label htmlFor='oldUrl'>Old-site url</label>
                                                     <Field
                                                         component='input'
                                                         className='text'
-                                                        name='currencyOther'
+                                                        name='oldUrl'
                                                         type='text'
                                                     />
                                                 </>
                                             )}
 
+                                            <label htmlFor='dVersion'>From what version?</label>
+                                            <Field
+                                                name='dVersion'
+                                                options={dVersionOptions}
+                                                component={ReactSelectAdapter}
+                                            />
                                             <label>
                                                 <Field
-                                                    name={'customWebshop'}
+                                                    name={'migration'}
                                                     component={CheckboxAdapter}
                                                 />
-                                                Custom Webshop
+                                                Content migration
                                             </label>
-
-                                            {values.customWebshop && (
-                                                <>
-                                                    <label>
-                                                        <Field
-                                                            name={'customerRegistration'}
-                                                            component={CheckboxAdapter}
-                                                        />
-                                                        Customer registration
-                                                    </label>
-
-                                                    <label>
-                                                        <Field
-                                                            name={'uniqueProductVariation'}
-                                                            component={CheckboxAdapter}
-                                                        />
-                                                        Unique product variations
-                                                    </label>
-
-                                                    {values.uniqueProductVariation && (
-                                                        <>
-                                                            <label htmlFor='upvAdditional'>
-                                                                Additional product variations
-                                                            </label>
-                                                            <Field
-                                                                component='textarea'
-                                                                className='text'
-                                                                name='upvAdditional'
-                                                                type='textarea'
-                                                            />
-                                                        </>
-                                                    )}
-
-                                                    <label>
-                                                        <Field
-                                                            name={'invoiceSystem'}
-                                                            component={CheckboxAdapter}
-                                                        />
-                                                        Invoice system integration
-                                                    </label>
-
-                                                    <label>
-                                                        <Field
-                                                            name={'stockManagement'}
-                                                            component={CheckboxAdapter}
-                                                        />
-                                                        Automatic stock management
-                                                    </label>
-
-                                                    <label>
-                                                        <Field
-                                                            name={'stockUpdate'}
-                                                            component={CheckboxAdapter}
-                                                        />
-                                                        Stock updates via importing from
-                                                        spreadsheets
-                                                    </label>
-
-                                                    <label>
-                                                        <Field
-                                                            name={'additionalCurrencies'}
-                                                            component={CheckboxAdapter}
-                                                        />
-                                                        Additional currencies
-                                                    </label>
-
-                                                    {values.additionalCurrencies && (
-                                                        <>
-                                                            <label htmlFor='additionalCurrenciesOther'>
-                                                                Currency list
-                                                            </label>
-                                                            <Field
-                                                                component='textarea'
-                                                                className='text'
-                                                                name='additionalCurrenciesOther'
-                                                                type='textarea'
-                                                            />
-                                                        </>
-                                                    )}
-
-                                                    <label>
-                                                        <Field
-                                                            name={'additionalVat'}
-                                                            component={CheckboxAdapter}
-                                                        />
-                                                        Additional VAT rates
-                                                    </label>
-
-                                                    {values.additionalVat && (
-                                                        <>
-                                                            <label htmlFor='additionalVatOther'>
-                                                                VAT rates list
-                                                            </label>
-                                                            <Field
-                                                                component='textarea'
-                                                                className='text'
-                                                                name='additionalVatOther'
-                                                                type='textarea'
-                                                            />
-                                                        </>
-                                                    )}
-
-                                                    <label>
-                                                        <Field
-                                                            name={'couponSystem'}
-                                                            component={CheckboxAdapter}
-                                                        />
-                                                        Coupon system implementation
-                                                    </label>
-
-                                                    <label>
-                                                        <Field
-                                                            name={'productFilters'}
-                                                            component={CheckboxAdapter}
-                                                        />
-                                                        Additional product filters
-                                                    </label>
-
-                                                    {values.productFilters && (
-                                                        <>
-                                                            <label htmlFor='additionalFilters'>
-                                                                Additional filters list
-                                                            </label>
-                                                            <Field
-                                                                component='textarea'
-                                                                className='text'
-                                                                name='additionalFilters'
-                                                                type='textarea'
-                                                            />
-                                                        </>
-                                                    )}
-
-                                                    <label>
-                                                        <Field
-                                                            name={'productPages'}
-                                                            component={CheckboxAdapter}
-                                                        />
-                                                        Unique product pages
-                                                    </label>
-
-                                                    <label htmlFor='webshopFeatures'>
-                                                        Unique Webshop Features
-                                                    </label>
-                                                    <Field
-                                                        component='textarea'
-                                                        className='text'
-                                                        name='webshopFeatures'
-                                                        type='textarea'
-                                                    />
-                                                </>
-                                            )}
                                         </>
                                     )}
-
-                                    {values.packages.value === 'flexi' ||
-                                    values.packages.value === 'custom' ? (
-                                        <>
+                                    <label htmlFor='packages'>Packages *Company specific*</label>
+                                    <Field
+                                        name='packages'
+                                        options={packagesOptions}
+                                        component={ReactSelectAdapter}
+                                    />
+                                    {values.packages && (
+                                        <div className='form-packages-container'>
+                                            <h2>Customize your package</h2>
                                             <label>
                                                 <Field
-                                                    name={'extraElements'}
+                                                    name={'moreLanguage'}
                                                     component={CheckboxAdapter}
                                                 />
-                                                Extra layout elements
+                                                More Language
                                             </label>
-
-                                            {values.extraElements && (
+                                            {values.moreLanguage && (
                                                 <>
-                                                    <label htmlFor='extraElementsOther'>
-                                                        New elements
+                                                    <label htmlFor='otherLanguage'>
+                                                        Other Languages
                                                     </label>
                                                     <Field
                                                         component='textarea'
                                                         className='text'
-                                                        name='extraElementsOther'
+                                                        name='otherLanguage'
                                                         type='textarea'
                                                     />
                                                 </>
                                             )}
-                                        </>
-                                    ) : null}
-
-                                    {values.packages.value === 'custom' ? (
-                                        <>
+                                            <label>
+                                                <Field name={'blog'} component={CheckboxAdapter} />
+                                                Blog
+                                            </label>
                                             <label>
                                                 <Field
-                                                    name={'flexibleLayout'}
+                                                    name={'webshop'}
                                                     component={CheckboxAdapter}
                                                 />
-                                                Flexible layout
+                                                Webshop
                                             </label>
 
-                                            <label>
-                                                <Field
-                                                    name={'uniqueDesign'}
-                                                    component={CheckboxAdapter}
-                                                />
-                                                Unique design
-                                            </label>
-
-                                            {values.uniqueDesign && (
+                                            {values.webshop && (
                                                 <>
-                                                    <label htmlFor='designUrl'>Design url</label>
+                                                    <label htmlFor='paymentMethod'>
+                                                        Payment method
+                                                    </label>
                                                     <Field
-                                                        component='input'
-                                                        className='text'
-                                                        name='designUrl'
-                                                        type='text'
+                                                        name='paymentMethod'
+                                                        options={paymentMethodOptions}
+                                                        component={ReactSelectAdapter}
                                                     />
+
+                                                    {values.paymentMethod &&
+                                                        values.paymentMethod.value === 'other' && (
+                                                            <>
+                                                                <label htmlFor='paymentMethodOther'>
+                                                                    Other payment method
+                                                                </label>
+                                                                <Field
+                                                                    component='input'
+                                                                    className='text'
+                                                                    name='paymentMethodOther'
+                                                                    type='text'
+                                                                />
+                                                            </>
+                                                        )}
+
+                                                    <label htmlFor='currency'>Currency</label>
+                                                    <Field
+                                                        name='currency'
+                                                        options={currencyOptions}
+                                                        component={ReactSelectAdapter}
+                                                    />
+
+                                                    {values.currency &&
+                                                        values.currency.value === 'other' && (
+                                                            <>
+                                                                <label htmlFor='currencyOther'>
+                                                                    Other currency
+                                                                </label>
+                                                                <Field
+                                                                    component='input'
+                                                                    className='text'
+                                                                    name='currencyOther'
+                                                                    type='text'
+                                                                />
+                                                            </>
+                                                        )}
 
                                                     <label>
                                                         <Field
-                                                            name={'uniqueEmail'}
+                                                            name={'customWebshop'}
                                                             component={CheckboxAdapter}
                                                         />
-                                                        Unique email templates
+                                                        Custom Webshop
                                                     </label>
+
+                                                    {values.customWebshop && (
+                                                        <>
+                                                            <label>
+                                                                <Field
+                                                                    name={'customerRegistration'}
+                                                                    component={CheckboxAdapter}
+                                                                />
+                                                                Customer registration
+                                                            </label>
+
+                                                            <label>
+                                                                <Field
+                                                                    name={'uniqueProductVariation'}
+                                                                    component={CheckboxAdapter}
+                                                                />
+                                                                Unique product variations
+                                                            </label>
+
+                                                            {values.uniqueProductVariation && (
+                                                                <>
+                                                                    <label htmlFor='upvAdditional'>
+                                                                        Additional product
+                                                                        variations
+                                                                    </label>
+                                                                    <Field
+                                                                        component='textarea'
+                                                                        className='text'
+                                                                        name='upvAdditional'
+                                                                        type='textarea'
+                                                                    />
+                                                                </>
+                                                            )}
+
+                                                            <label>
+                                                                <Field
+                                                                    name={'invoiceSystem'}
+                                                                    component={CheckboxAdapter}
+                                                                />
+                                                                Invoice system integration
+                                                            </label>
+
+                                                            <label>
+                                                                <Field
+                                                                    name={'stockManagement'}
+                                                                    component={CheckboxAdapter}
+                                                                />
+                                                                Automatic stock management
+                                                            </label>
+
+                                                            <label>
+                                                                <Field
+                                                                    name={'stockUpdate'}
+                                                                    component={CheckboxAdapter}
+                                                                />
+                                                                Stock updates via importing from
+                                                                spreadsheets
+                                                            </label>
+
+                                                            <label>
+                                                                <Field
+                                                                    name={'additionalCurrencies'}
+                                                                    component={CheckboxAdapter}
+                                                                />
+                                                                Additional currencies
+                                                            </label>
+
+                                                            {values.additionalCurrencies && (
+                                                                <>
+                                                                    <label htmlFor='additionalCurrenciesOther'>
+                                                                        Currency list
+                                                                    </label>
+                                                                    <Field
+                                                                        component='textarea'
+                                                                        className='text'
+                                                                        name='additionalCurrenciesOther'
+                                                                        type='textarea'
+                                                                    />
+                                                                </>
+                                                            )}
+
+                                                            <label>
+                                                                <Field
+                                                                    name={'additionalVat'}
+                                                                    component={CheckboxAdapter}
+                                                                />
+                                                                Additional VAT rates
+                                                            </label>
+
+                                                            {values.additionalVat && (
+                                                                <>
+                                                                    <label htmlFor='additionalVatOther'>
+                                                                        VAT rates list
+                                                                    </label>
+                                                                    <Field
+                                                                        component='textarea'
+                                                                        className='text'
+                                                                        name='additionalVatOther'
+                                                                        type='textarea'
+                                                                    />
+                                                                </>
+                                                            )}
+
+                                                            <label>
+                                                                <Field
+                                                                    name={'couponSystem'}
+                                                                    component={CheckboxAdapter}
+                                                                />
+                                                                Coupon system implementation
+                                                            </label>
+
+                                                            <label>
+                                                                <Field
+                                                                    name={'productFilters'}
+                                                                    component={CheckboxAdapter}
+                                                                />
+                                                                Additional product filters
+                                                            </label>
+
+                                                            {values.productFilters && (
+                                                                <>
+                                                                    <label htmlFor='additionalFilters'>
+                                                                        Additional filters list
+                                                                    </label>
+                                                                    <Field
+                                                                        component='textarea'
+                                                                        className='text'
+                                                                        name='additionalFilters'
+                                                                        type='textarea'
+                                                                    />
+                                                                </>
+                                                            )}
+
+                                                            <label>
+                                                                <Field
+                                                                    name={'productPages'}
+                                                                    component={CheckboxAdapter}
+                                                                />
+                                                                Unique product pages
+                                                            </label>
+
+                                                            <label htmlFor='webshopFeatures'>
+                                                                Unique Webshop Features
+                                                            </label>
+                                                            <Field
+                                                                component='textarea'
+                                                                className='text'
+                                                                name='webshopFeatures'
+                                                                type='textarea'
+                                                            />
+                                                        </>
+                                                    )}
                                                 </>
                                             )}
 
-                                            <label htmlFor='extraFeatures'>Extra features</label>
-                                            <Field
-                                                component='textarea'
-                                                className='text'
-                                                name='extraFeatures'
-                                                type='textarea'
-                                            />
-                                        </>
-                                    ) : null}
-                                </div>
+                                            {values.packages.value === 'flexi' ||
+                                            values.packages.value === 'custom' ? (
+                                                <>
+                                                    <label>
+                                                        <Field
+                                                            name={'extraElements'}
+                                                            component={CheckboxAdapter}
+                                                        />
+                                                        Extra layout elements
+                                                    </label>
+
+                                                    {values.extraElements && (
+                                                        <>
+                                                            <label htmlFor='extraElementsOther'>
+                                                                New elements
+                                                            </label>
+                                                            <Field
+                                                                component='textarea'
+                                                                className='text'
+                                                                name='extraElementsOther'
+                                                                type='textarea'
+                                                            />
+                                                        </>
+                                                    )}
+                                                </>
+                                            ) : null}
+
+                                            {values.packages.value === 'custom' ? (
+                                                <>
+                                                    <label>
+                                                        <Field
+                                                            name={'flexibleLayout'}
+                                                            component={CheckboxAdapter}
+                                                        />
+                                                        Flexible layout
+                                                    </label>
+
+                                                    <label>
+                                                        <Field
+                                                            name={'uniqueDesign'}
+                                                            component={CheckboxAdapter}
+                                                        />
+                                                        Unique design
+                                                    </label>
+
+                                                    {values.uniqueDesign && (
+                                                        <>
+                                                            <label htmlFor='designUrl'>
+                                                                Design url
+                                                            </label>
+                                                            <Field
+                                                                component='input'
+                                                                className='text'
+                                                                name='designUrl'
+                                                                type='text'
+                                                            />
+
+                                                            <label>
+                                                                <Field
+                                                                    name={'uniqueEmail'}
+                                                                    component={CheckboxAdapter}
+                                                                />
+                                                                Unique email templates
+                                                            </label>
+                                                        </>
+                                                    )}
+
+                                                    <label htmlFor='extraFeatures'>
+                                                        Extra features
+                                                    </label>
+                                                    <Field
+                                                        component='textarea'
+                                                        className='text'
+                                                        name='extraFeatures'
+                                                        type='textarea'
+                                                    />
+                                                </>
+                                            ) : null}
+                                        </div>
+                                    )}
+                                    <div className='submit-btn'>
+                                        <button type='submit'>Send</button>
+                                    </div>
+                                </form>
                             )}
-                            <div className='submit-btn'>
-                                <button type='submit'>Send</button>
-                            </div>
-                        </form>
-                    )}
-                />
+                        />
+                    </>
+                ) : (
+                    <h1>Permission denied!</h1>
+                )}
             </div>
         </div>
     );

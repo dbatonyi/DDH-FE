@@ -17,7 +17,7 @@ const Register = () => {
         const repassword = formData.get('repassword');
 
         if (password === repassword) {
-            await fetch(`${configData.SERVER_URL}/api/register`, {
+            await fetch(`${configData.serverUrl}/api/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

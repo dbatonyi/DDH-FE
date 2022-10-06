@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-const Navbar = ({ auth, onLogout }) => {
+const Navbar = ({ auth, userInfo, onLogout }) => {
     const router = useRouter();
+
+    const userRole = userInfo?.role;
 
     return (
         <div className='ddh-navigation-sidebar'>
@@ -21,13 +23,17 @@ const Navbar = ({ auth, onLogout }) => {
                         <li className={router.asPath == '/dashboard' ? 'active' : ''}>
                             <Link href='/dashboard'>Home</Link>
                         </li>
-                        <li className={router.asPath == '/tmf' ? 'active' : ''}>
-                            <Link href='/tmf'>Task Manager Form</Link>
-                        </li>
+                        {!userRole.includes('User') ? (
+                            <li className={router.asPath == '/tmf' ? 'active' : ''}>
+                                <Link href='/tmf'>Task Manager Form</Link>
+                            </li>
+                        ) : null}
                         <div className='separator'></div>
-                        <li className={router.asPath == '/task/new' ? 'active' : ''}>
-                            <Link href='/task/new'>Create Task</Link>
-                        </li>
+                        {!userRole.includes('User') ? (
+                            <li className={router.asPath == '/task/new' ? 'active' : ''}>
+                                <Link href='/task/new'>Create Task</Link>
+                            </li>
+                        ) : null}
                         <li className={router.asPath == '/task/list' ? 'active' : ''}>
                             <Link href='/task/list'>Task List</Link>
                         </li>

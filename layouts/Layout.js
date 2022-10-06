@@ -31,7 +31,7 @@ const Layout = (props) => {
     }, [statusMessage]);
 
     function authentication() {
-        fetch(`${configData.SERVER_URL}/api/user`, {
+        fetch(`${configData.serverUrl}/api/user`, {
             credentials: 'include'
         })
             .then((res) => res.json())
@@ -59,7 +59,7 @@ const Layout = (props) => {
     }
 
     function logout() {
-        fetch(`${configData.SERVER_URL}/api/logout`, {
+        fetch(`${configData.serverUrl}/api/logout`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
@@ -71,7 +71,7 @@ const Layout = (props) => {
     }
 
     async function login(email, password) {
-        const response = await fetch(`${configData.SERVER_URL}/api/login`, {
+        const response = await fetch(`${configData.serverUrl}/api/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -114,7 +114,7 @@ const Layout = (props) => {
                             <link rel='icon' href='/favicon.ico' />
                         </Head>
 
-                        <Navbar auth={auth} onLogout={logout} />
+                        <Navbar auth={auth} userInfo={userInfo} onLogout={logout} />
 
                         <main className='ddh-main'>
                             {props.children}

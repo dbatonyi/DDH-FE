@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import TagsInput from 'react-tagsinput';
 import { useRouter } from 'next/router';
 import Select from 'react-select';
@@ -10,6 +10,14 @@ const NewTask = (props) => {
     const authContext = useContext(AuthContext);
     const [tag, setTag] = useState([]);
 
+    const userRole = authContext.userInfo.role;
+
+    useEffect(() => {
+        if (userRole.includes('User')) {
+            router.push('/');
+        }
+    }, []);
+
     const submit = async (e) => {
         e.preventDefault();
 
@@ -20,7 +28,7 @@ const NewTask = (props) => {
         const body = formData.get('body');
         const category = formData.get('category');
 
-        const response = await fetch(`${configData.SERVER_URL}/api/task/new`, {
+        const response = await fetch(`${configData.serverUrl}/api/task/new`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -46,28 +54,39 @@ const NewTask = (props) => {
     return (
         <div className='ddh-task'>
             <div className='ddh-task__container'>
-                <h1>Create new task</h1>
-                <form onSubmit={submit}>
-                    <label htmlFor='title'>Title</label>
-                    <input className='text' name='title' type='text' required />
+                {!userRole.includes('User') ? (
+                    <>
+                        <h1>Create new task</h1>
+                        <form onSubmit={submit}>
+                            <label htmlFor='title'>Title</label>
+                            <input className='text' name='title' type='text' required />
 
-                    <label htmlFor='short'>Task Short</label>
-                    <textarea className='text' name='short' type='textarea' required />
+                            <label htmlFor='short'>Task Short</label>
+                            <textarea className='text' name='short' type='textarea' required />
 
-                    <label htmlFor='body'>Task Description</label>
-                    <textarea className='text-desc' name='body' type='textarea' required />
+                            <label htmlFor='body'>Task Description</label>
+                            <textarea className='text-desc' name='body' type='textarea' required />
 
-                    <label htmlFor='category'>Task Category</label>
-                    <Select name='category' options={categoryOptions} />
+                            <label htmlFor='category'>Task Category</label>
+                            <Select name='category' options={categoryOptions} />
 
-                    <label htmlFor='tag'>Task Tags</label>
-                    <TagsInput value={tag} onChange={setTag} name='tag' placeHolder='enter tags' />
-                    <div className='submit-btn'>
-                        <button className='btn' type='submit'>
-                            Save
-                        </button>
-                    </div>
-                </form>
+                            <label htmlFor='tag'>Task Tags</label>
+                            <TagsInput
+                                value={tag}
+                                onChange={setTag}
+                                name='tag'
+                                placeHolder='enter tags'
+                            />
+                            <div className='submit-btn'>
+                                <button className='btn' type='submit'>
+                                    Save
+                                </button>
+                            </div>
+                        </form>
+                    </>
+                ) : (
+                    <h1>Permission denied!</h1>
+                )}
             </div>
         </div>
     );

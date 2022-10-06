@@ -10,7 +10,7 @@ const EditTask = (props) => {
     const router = useRouter();
     const { pid } = router.query;
 
-    const { setStatusMessage } = useContext(AuthContext);
+    const { setStatusMessage, userInfo } = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -20,11 +20,19 @@ const EditTask = (props) => {
     const [tag, setTag] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
 
+    const userRole = userInfo.role;
+
+    useEffect(() => {
+        if (userRole.includes('User')) {
+            router.push('/');
+        }
+    }, []);
+
     useEffect(() => {
         let isFetched = false;
 
         const getTask = async () => {
-            const fetchTask = await fetch(`${configData.SERVER_URL}/api/task/${pid}`, {
+            const fetchTask = await fetch(`${configData.serverUrl}/api/task/${pid}`, {
                 credentials: 'include'
             });
             const getData = await fetchTask.json();
@@ -70,7 +78,7 @@ const EditTask = (props) => {
     const submit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch(`${configData.SERVER_URL}/api/task/edit/${pid}`, {
+        const response = await fetch(`${configData.serverUrl}/api/task/edit/${pid}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -106,61 +114,67 @@ const EditTask = (props) => {
             ) : (
                 <div className='ddh-task'>
                     <div className='ddh-task__container'>
-                        <h1>Edit task</h1>
-                        <form onSubmit={submit}>
-                            <label htmlFor='title'>Title</label>
-                            <input
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                className='text'
-                                name='title'
-                                type='text'
-                                required
-                            />
+                        {!userRole.includes('User') ? (
+                            <>
+                                <h1>Edit task</h1>
+                                <form onSubmit={submit}>
+                                    <label htmlFor='title'>Title</label>
+                                    <input
+                                        value={title}
+                                        onChange={(e) => setTitle(e.target.value)}
+                                        className='text'
+                                        name='title'
+                                        type='text'
+                                        required
+                                    />
 
-                            <label htmlFor='short'>Task Short</label>
-                            <textarea
-                                value={short}
-                                onChange={(e) => setShort(e.target.value)}
-                                className='text'
-                                name='short'
-                                type='textarea'
-                                required
-                            />
+                                    <label htmlFor='short'>Task Short</label>
+                                    <textarea
+                                        value={short}
+                                        onChange={(e) => setShort(e.target.value)}
+                                        className='text'
+                                        name='short'
+                                        type='textarea'
+                                        required
+                                    />
 
-                            <label htmlFor='body'>Task Description</label>
-                            <textarea
-                                value={body}
-                                onChange={(e) => setBody(e.target.value)}
-                                className='text-desc'
-                                name='body'
-                                type='textarea'
-                                required
-                            />
+                                    <label htmlFor='body'>Task Description</label>
+                                    <textarea
+                                        value={body}
+                                        onChange={(e) => setBody(e.target.value)}
+                                        className='text-desc'
+                                        name='body'
+                                        type='textarea'
+                                        required
+                                    />
 
-                            <label htmlFor='category'>Task Category</label>
-                            <Select
-                                onChange={setSelectedOption}
-                                value={selectedOption}
-                                name='category'
-                                options={categoryOptions}
-                            />
+                                    <label htmlFor='category'>Task Category</label>
+                                    <Select
+                                        onChange={setSelectedOption}
+                                        value={selectedOption}
+                                        name='category'
+                                        options={categoryOptions}
+                                    />
 
-                            <label htmlFor='tag'>Task Tags</label>
-                            <TagsInput
-                                value={tag}
-                                onChange={setTag}
-                                name='tag'
-                                placeHolder='enter tags'
-                            />
+                                    <label htmlFor='tag'>Task Tags</label>
+                                    <TagsInput
+                                        value={tag}
+                                        onChange={setTag}
+                                        name='tag'
+                                        placeHolder='enter tags'
+                                    />
 
-                            <div className='form-actions'>
-                                <Link href='/task/list'>Cancel</Link>
-                                <button className='btn' type='submit'>
-                                    Save
-                                </button>
-                            </div>
-                        </form>
+                                    <div className='form-actions'>
+                                        <Link href='/task/list'>Cancel</Link>
+                                        <button className='btn' type='submit'>
+                                            Save
+                                        </button>
+                                    </div>
+                                </form>
+                            </>
+                        ) : (
+                            <h1>Permission denied!</h1>
+                        )}
                     </div>
                 </div>
             )}

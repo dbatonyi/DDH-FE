@@ -15,7 +15,7 @@ const ResetPassword = () => {
         const rePassword = formData.get('repassword');
 
         if (password === rePassword) {
-            await fetch(`${configData.SERVER_URL}/api/password/reset/${urlParam}`, {
+            await fetch(`${configData.serverUrl}/api/password/reset/${urlParam}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include',

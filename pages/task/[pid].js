@@ -23,7 +23,7 @@ const Task = (props) => {
     }, [router.isReady]);
 
     function getTaskList() {
-        fetch(`${configData.SERVER_URL}/api/task/${pid}`, {
+        fetch(`${configData.serverUrl}/api/task/${pid}`, {
             credentials: 'include'
         })
             .then((res) => res.json())
@@ -53,7 +53,7 @@ const Task = (props) => {
     }
 
     async function deleteTask() {
-        const response = await fetch(`${configData.SERVER_URL}/api/task/${selectedId}`, {
+        const response = await fetch(`${configData.serverUrl}/api/task/${selectedId}`, {
             method: 'DELETE',
             credentials: 'include'
         });

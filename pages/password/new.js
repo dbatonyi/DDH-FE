@@ -12,7 +12,7 @@ const NewPassword = () => {
 
         const email = formData.get('email');
 
-        await fetch(`${configData.SERVER_URL}/api/password/new`, {
+        await fetch(`${configData.serverUrl}/api/password/new`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',

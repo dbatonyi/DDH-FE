@@ -1,5 +1,3 @@
-import { AuthContext } from '../layouts/Layout';
-
 const Dashboard = () => {
     return (
         <div className='ddh-dashboard'>

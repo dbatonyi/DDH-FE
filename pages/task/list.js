@@ -8,7 +8,7 @@ var moment = require('moment');
 
 const TaskList = (props) => {
     const router = useRouter();
-    const { setStatusMessage } = useContext(AuthContext);
+    const { setStatusMessage, userInfo } = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
@@ -16,10 +16,12 @@ const TaskList = (props) => {
     const [selectedId, setSelectedId] = useState(null);
     const [popupOpen, setPopupOpen] = useState(false);
 
+    const userRole = userInfo.role;
+
     useEffect(getTaskList, [refreshed]);
 
     function getTaskList() {
-        fetch(`${configData.SERVER_URL}/api/task/list`, {
+        fetch(`${configData.serverUrl}/api/task/list`, {
             credentials: 'include'
         })
             .then((res) => res.json())
@@ -41,7 +43,7 @@ const TaskList = (props) => {
     }
 
     async function deleteTask() {
-        const response = await fetch(`${configData.SERVER_URL}/api/task/${selectedId}`, {
+        const response = await fetch(`${configData.serverUrl}/api/task/${selectedId}`, {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -86,10 +88,14 @@ const TaskList = (props) => {
             field: 'user',
             headerName: 'Author',
             width: 150,
-            valueFormatter: (params) => `${params?.value?.firstname}, ${params?.value?.lastname}`
+            valueFormatter: (params) =>
+                params?.value?.firstname
+                    ? `${params?.value?.firstname}, ${params?.value?.lastname}`
+                    : 'Anonymous'
         },
         {
             field: 'actions',
+            hide: !userRole.includes('User') ? false : true,
             headerName: 'Actions',
             width: 180,
             sortable: false,
