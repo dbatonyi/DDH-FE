@@ -8,13 +8,15 @@ const Task = (props) => {
     const router = useRouter();
     const { pid } = router.query;
 
-    const { setStatusMessage } = useContext(AuthContext);
+    const { setStatusMessage, userInfo } = useContext(AuthContext);
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState([]);
     const [tags, setTags] = useState([]);
     const [selectedId, setSelectedId] = useState(null);
     const [popupOpen, setPopupOpen] = useState(false);
+
+    const userRole = userInfo.role;
 
     useEffect(() => {
         if (!router.isReady) return;
@@ -94,15 +96,17 @@ const Task = (props) => {
                                 ))}
                             </ul>
                         </div>
-                        <div className='ddh-task-single__container--btn'>
-                            <Link href={`/task/edit/${pid}`}>Edit</Link>
-                            <button
-                                onClick={() => {
-                                    openPopup(pid);
-                                }}>
-                                Delete
-                            </button>
-                        </div>
+                        {!userRole.includes('User') ? (
+                            <div className='ddh-task-single__container--btn'>
+                                <Link href={`/task/edit/${pid}`}>Edit</Link>
+                                <button
+                                    onClick={() => {
+                                        openPopup(pid);
+                                    }}>
+                                    Delete
+                                </button>
+                            </div>
+                        ) : null}
                         {popupOpen && (
                             <div className='popup-container'>
                                 <div className='popup-container-box'>

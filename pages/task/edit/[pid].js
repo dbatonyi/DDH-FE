@@ -163,7 +163,6 @@ const EditTask = (props) => {
                                         name='tag'
                                         placeHolder='enter tags'
                                     />
-
                                     <div className='form-actions'>
                                         <Link href='/task/list'>Cancel</Link>
                                         <button className='btn' type='submit'>
