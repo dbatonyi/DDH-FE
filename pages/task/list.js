@@ -49,6 +49,10 @@ const TaskList = (props) => {
     async function deleteTask() {
         const response = await fetch(`${configData.serverUrl}/api/task/${selectedId}`, {
             method: 'DELETE',
+            headers:{ 
+                'Content-Type': 'application/json',
+                'authenticate': `Bearer ${configData.apiToken}`    
+            },
             credentials: 'include'
         });
         const data = await response.json();

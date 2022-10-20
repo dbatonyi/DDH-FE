@@ -84,7 +84,10 @@ const EditTask = (props) => {
 
         const response = await fetch(`${configData.serverUrl}/api/task/edit/${pid}`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers:{ 
+                'Content-Type': 'application/json',
+                'authenticate': `Bearer ${configData.apiToken}`    
+            },
             credentials: 'include',
             body: JSON.stringify({
                 title: title,
