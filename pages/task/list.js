@@ -22,6 +22,10 @@ const TaskList = (props) => {
 
     function getTaskList() {
         fetch(`${configData.serverUrl}/api/task/list`, {
+            headers:{ 
+                'Content-Type': 'application/json',
+                'authenticate': `Bearer ${configData.apiToken}`    
+            },
             credentials: 'include'
         })
             .then((res) => res.json())

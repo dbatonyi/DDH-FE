@@ -33,6 +33,10 @@ const EditTask = (props) => {
 
         const getTask = async () => {
             const fetchTask = await fetch(`${configData.serverUrl}/api/task/${pid}`, {
+                headers:{ 
+                    'Content-Type': 'application/json',
+                    'authenticate': `Bearer ${configData.apiToken}`    
+                },
                 credentials: 'include'
             });
             const getData = await fetchTask.json();

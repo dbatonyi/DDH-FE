@@ -23,13 +23,13 @@ const Navbar = ({ auth, userInfo, onLogout }) => {
                         <li className={router.asPath == '/dashboard' ? 'active' : ''}>
                             <Link href='/dashboard'>Home</Link>
                         </li>
-                        {!userRole.includes('User') ? (
+                        {userRole && !userRole.includes('User') ? (
                             <li className={router.asPath == '/tmf' ? 'active' : ''}>
                                 <Link href='/tmf'>Task Manager Form</Link>
                             </li>
                         ) : null}
                         <div className='separator'></div>
-                        {!userRole.includes('User') ? (
+                        {userRole && !userRole.includes('User') ? (
                             <li className={router.asPath == '/task/new' ? 'active' : ''}>
                                 <Link href='/task/new'>Create Task</Link>
                             </li>

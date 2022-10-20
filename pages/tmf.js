@@ -72,7 +72,10 @@ const TaskManagerForm = (props) => {
 
         const response = await fetch(`${configData.serverUrl}/api/tmf-form`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers:{ 
+                'Content-Type': 'application/json',
+                'authenticate': `Bearer ${configData.apiToken}`    
+            },
             credentials: 'include',
             body: JSON.stringify({ values })
         });
