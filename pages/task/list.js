@@ -30,6 +30,7 @@ const TaskList = (props) => {
         })
             .then((res) => res.json())
             .then((content) => {
+
                 setData(content);
                 setIsLoading(false);
             })
@@ -56,7 +57,6 @@ const TaskList = (props) => {
             credentials: 'include'
         });
         const data = await response.json();
-        console.log(data);
 
         if (response.status === 200) {
             setStatusMessage(data.message);
@@ -113,7 +113,7 @@ const TaskList = (props) => {
                     <Link href={`/task/edit/${params.id}`}>Edit</Link>
                     <button
                         onClick={() => {
-                            openPopup(params.id);
+                            openPopup(params?.row?.uuid);
                         }}>
                         Delete
                     </button>

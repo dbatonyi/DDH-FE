@@ -68,7 +68,6 @@ const Task = (props) => {
             credentials: 'include'
         });
         const data = await response.json();
-        console.log(data);
 
         if (response.status === 200) {
             setStatusMessage(data.message);
@@ -109,7 +108,7 @@ const Task = (props) => {
                                 <Link href={`/task/edit/${pid}`}>Edit</Link>
                                 <button
                                     onClick={() => {
-                                        openPopup(pid);
+                                        openPopup(data.uuid);
                                     }}>
                                     Delete
                                 </button>
