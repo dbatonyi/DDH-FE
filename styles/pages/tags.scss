@@ -19,13 +19,15 @@
       &--text {
         width: 100%;
         height: 100%;
+        position: relative;
       }
 
       &--table {
         overflow-y: scroll;
         width: 100%;
-        height: 85%;
+        height: 80%;
         padding-right: 40px;
+        margin-top: 40px;
 
         &::-webkit-scrollbar {
           width: 10px;
@@ -48,24 +50,6 @@
             border-collapse: collapse;
             background: rgb(241 242 245 / 60%);
 
-            thead {
-                text-align: left;
-
-                tr {
-                    border-bottom: 3px solid lightgray;
-                }
-
-                th {
-                    padding: 10px;
-                    text-transform: uppercase;
-
-                    &:first-child {
-                        width: 30%;
-                        border-right: 2px solid lightgray;
-                    }
-                }
-            }
-
             tbody {
 
                 tr {
@@ -81,12 +65,39 @@
                     font-weight: 600;
                     
                     &:first-child {
-                        border-right: 2px solid lightgray;
+                      width: 30%;
+                      border-right: 2px solid lightgray;
                     }
                 }
             }
         }
-    
+      }
+
+      &--table-top {
+        display: flex;
+        width: 100%;
+        padding-right: 50px;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        .tag-name,
+        .tag-desc {
+          padding: 10px;
+          font-weight: bold;
+          text-transform: uppercase;
+          background: rgba(241, 242, 245, 0.6);
+          border-bottom: 3px solid lightgray;
+        }
+
+        .tag-name {
+          width: 30%;
+          border-right: 2px solid lightgray;
+        }
+
+        .tag-desc {
+          width: 70%;
+        }
       }
     }
   }

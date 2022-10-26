@@ -4,14 +4,12 @@ const Tags = () => {
             <div className='ddh-tags__container'>
                 <h1>Available task tags</h1>
                 <div className='ddh-tags__container--text'>
+                    <div className="ddh-tags__container--table-top">
+                        <div className="tag-name">Tag name</div>
+                        <div className="tag-desc">Tag description</div>
+                    </div>
                     <div className="ddh-tags__container--table">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Tag name</th>
-                                <th>Tag description</th>
-                            </tr>
-                        </thead>
                         <tbody>
                             <tr>
                                 <td>Drupal update</td>
