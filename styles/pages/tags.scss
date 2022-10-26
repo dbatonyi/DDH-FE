@@ -1,0 +1,93 @@
+.ddh-tags {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 45px;
+  
+    &__container {
+      @include auth-card;
+      width: 75%;
+      height: inherit;
+
+      h1 {
+        width: 100%;
+      }
+
+      &--text {
+        width: 100%;
+        height: 100%;
+      }
+
+      &--table {
+        overflow-y: scroll;
+        width: 100%;
+        height: 85%;
+        padding-right: 40px;
+
+        &::-webkit-scrollbar {
+          width: 10px;
+        }
+    
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+    
+        &::-webkit-scrollbar-thumb {
+          background: rgba(77, 132, 255, 0.8);
+        }
+    
+        &::-webkit-scrollbar-thumb:hover {
+          background: #576398;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgb(241 242 245 / 60%);
+
+            thead {
+                text-align: left;
+
+                tr {
+                    border-bottom: 3px solid lightgray;
+                }
+
+                th {
+                    padding: 10px;
+                    text-transform: uppercase;
+
+                    &:first-child {
+                        width: 30%;
+                        border-right: 2px solid lightgray;
+                    }
+                }
+            }
+
+            tbody {
+
+                tr {
+                    border-bottom: 2px solid lightgray;
+
+                    &:last-child {
+                        border: none;
+                    }
+                }
+
+                td {
+                    padding: 10px;
+                    font-weight: 600;
+                    
+                    &:first-child {
+                        border-right: 2px solid lightgray;
+                    }
+                }
+            }
+        }
+    
+      }
+    }
+  }
+  

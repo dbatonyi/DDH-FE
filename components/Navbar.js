@@ -28,6 +28,14 @@ const Navbar = ({ auth, userInfo, onLogout }) => {
                                 <Link href='/tmf'>Task Manager Form</Link>
                             </li>
                         ) : null}
+                        {userRole && !userRole.includes('User') ? (
+                            <>
+                            <div className='separator'></div>
+                            <li className={router.asPath == '/tags' ? 'active' : ''}>
+                                <Link href='/tags'>Tag library</Link>
+                            </li>
+                            </>
+                        ) : null}
                         <div className='separator'></div>
                         {userRole && !userRole.includes('User') ? (
                             <li className={router.asPath == '/task/new' ? 'active' : ''}>
