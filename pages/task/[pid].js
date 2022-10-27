@@ -35,14 +35,6 @@ const Task = (props) => {
             .then((res) => res.json())
             .then((content) => {
                 setData(content);
-
-                if (content.taskTags.includes(',')) {
-                    const getAllTags = content.taskTags.split(',');
-                    setTags(getAllTags);
-                } else {
-                    setTags([content.taskTags]);
-                }
-
                 setIsLoading(false);
             })
             .catch((err) => console.log(err));
@@ -96,11 +88,9 @@ const Task = (props) => {
                             <p>{data.taskDescription}</p>
                         </div>
                         <div className='ddh-task-single__container--tags'>
-                            <h2>Tags:</h2>
+                            <h2>Tag:</h2>
                             <ul>
-                                {tags.map((tag) => (
-                                    <li key={tag}>{tag}</li>
-                                ))}
+                                <li key={data.taskTags}>{data.taskTags}</li>
                             </ul>
                         </div>
                         {!userRole.includes('User') ? (

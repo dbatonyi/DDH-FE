@@ -17,7 +17,7 @@ const EditTask = (props) => {
     const [title, setTitle] = useState();
     const [short, setShort] = useState();
     const [body, setBody] = useState();
-    const [tag, setTag] = useState([]);
+    const [selectedTagOption, setSelectedTagOption] = useState([]);
     const [selectedOption, setSelectedOption] = useState(null);
 
     const userRole = userInfo.role;
@@ -46,28 +46,12 @@ const EditTask = (props) => {
                 setShort(getData.taskShort);
                 setBody(getData.taskDescription);
 
-                switch (getData.taskCategory) {
-                    case 'backend':
-                        setSelectedOption({ value: 'backend', label: 'Backend' });
-                        break;
-                    case 'frontend':
-                        setSelectedOption({ value: 'frontend', label: 'Frontend' });
-                        break;
-                    default:
-                        console.log('taskCategory error');
+                if (getData.taskCategory) {
+                    setSelectedOption({ value: getData.taskCategory, label: getData.taskCategory });
                 }
 
                 if (getData.taskTags) {
-                    switch (getData.taskTags.includes(',')) {
-                        case true:
-                            setTag(getData.taskTags.split(','));
-                            break;
-                        case false:
-                            setTag([getData.taskTags]);
-                            break;
-                        default:
-                            console.log('taskTags error');
-                    }
+                    setSelectedTagOption({ value: getData.taskTags, label: getData.taskTags});
                 }
 
                 setIsLoading(false);
@@ -92,7 +76,7 @@ const EditTask = (props) => {
             body: JSON.stringify({
                 title: title,
                 taskCategory: selectedOption.value,
-                taskTags: tag.toString(),
+                taskTags: selectedTagOption.value,
                 taskShort: short,
                 taskDescription: body,
                 updateAt: new Date()
@@ -106,8 +90,36 @@ const EditTask = (props) => {
     };
 
     const categoryOptions = [
-        { value: 'frontend', label: 'Frontend' },
-        { value: 'backend', label: 'Backend' }
+        { value: 'Frontend', label: 'Frontend' },
+        { value: 'Backend', label: 'Backend' }
+    ];
+
+    const tagOptions = [
+        { value: 'Install drupal', label: 'Install drupal'},
+        { value: 'Drupal update', label: 'Drupal update'},
+        { value: 'External server', label: 'External server'},
+        { value: 'Drupal 7', label: 'Drupal 7'},
+        { value: 'Drupal 8', label: 'Drupal 8'},
+        { value: 'Migration', label: 'Migration'},
+        { value: 'Blog', label: 'Blog'},
+        { value: 'Webshop', label: 'Webshop'},
+        { value: 'Payment method', label: 'Payment method'},
+        { value: 'Currency', label: 'Currency'},
+        { value: 'Custom webhop', label: 'Custom webhop'},
+        { value: 'Custumer registration', label: 'Custumer registration'},
+        { value: 'Product variation', label: 'Product variation'},
+        { value: 'Invoice system', label: 'Invoice system'},
+        { value: 'Stock management', label: 'Stock management'},
+        { value: 'Stock update', label: 'Stock update'},
+        { value: 'Additional currencies', label: 'Additional currencies'},
+        { value: 'Additional VAT', label: 'Additional VAT'},
+        { value: 'Coupon system', label: 'Coupon system'},
+        { value: 'Product filters', label: 'Product filters'},
+        { value: 'Product pages', label: 'Product pages'},
+        { value: 'Layout elements', label: 'Layout elements'},
+        { value: 'Flexible layout', label: 'Flexible layout'},
+        { value: 'Unique design', label: 'Unique design'},
+        { value: 'Email template', label: 'Email template'},
     ];
 
     return (
@@ -164,12 +176,13 @@ const EditTask = (props) => {
                                     />
 
                                     <label htmlFor='tag'>Task Tags</label>
-                                    <TagsInput
-                                        value={tag}
-                                        onChange={setTag}
-                                        name='tag'
-                                        placeHolder='enter tags'
+                                    <Select
+                                        onChange={setSelectedTagOption}
+                                        value={selectedTagOption}
+                                        name='category'
+                                        options={tagOptions}
                                     />
+
                                     <div className='form-actions'>
                                         <Link href='/task/list'>Cancel</Link>
                                         <button className='btn' type='submit'>

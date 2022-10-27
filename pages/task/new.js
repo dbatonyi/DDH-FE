@@ -8,7 +8,6 @@ import { AuthContext } from '../../layouts/Layout';
 const NewTask = (props) => {
     const router = useRouter();
     const authContext = useContext(AuthContext);
-    const [tag, setTag] = useState([]);
 
     const userRole = authContext.userInfo.role;
 
@@ -27,6 +26,7 @@ const NewTask = (props) => {
         const short = formData.get('short');
         const body = formData.get('body');
         const category = formData.get('category');
+        const tag = formData.get('tag');
 
         const response = await fetch(`${configData.serverUrl}/api/task/new`, {
             method: 'POST',
@@ -38,7 +38,7 @@ const NewTask = (props) => {
             body: JSON.stringify({
                 title: title,
                 taskCategory: category,
-                taskTags: tag.toString(),
+                taskTags: tag,
                 taskShort: short,
                 taskDescription: body,
                 userUuid: authContext.userInfo.uuid
@@ -50,8 +50,36 @@ const NewTask = (props) => {
     };
 
     const categoryOptions = [
-        { value: 'frontend', label: 'Frontend' },
-        { value: 'backend', label: 'Backend' }
+        { value: 'Frontend', label: 'Frontend' },
+        { value: 'Backend', label: 'Backend' }
+    ];
+
+    const tagOptions = [
+        { value: 'Install drupal', label: 'Install drupal'},
+        { value: 'Drupal update', label: 'Drupal update'},
+        { value: 'External server', label: 'External server'},
+        { value: 'Drupal 7', label: 'Drupal 7'},
+        { value: 'Drupal 8', label: 'Drupal 8'},
+        { value: 'Migration', label: 'Migration'},
+        { value: 'Blog', label: 'Blog'},
+        { value: 'Webshop', label: 'Webshop'},
+        { value: 'Payment method', label: 'Payment method'},
+        { value: 'Currency', label: 'Currency'},
+        { value: 'Custom webhop', label: 'Custom webhop'},
+        { value: 'Custumer registration', label: 'Custumer registration'},
+        { value: 'Product variation', label: 'Product variation'},
+        { value: 'Invoice system', label: 'Invoice system'},
+        { value: 'Stock management', label: 'Stock management'},
+        { value: 'Stock update', label: 'Stock update'},
+        { value: 'Additional currencies', label: 'Additional currencies'},
+        { value: 'Additional VAT', label: 'Additional VAT'},
+        { value: 'Coupon system', label: 'Coupon system'},
+        { value: 'Product filters', label: 'Product filters'},
+        { value: 'Product pages', label: 'Product pages'},
+        { value: 'Layout elements', label: 'Layout elements'},
+        { value: 'Flexible layout', label: 'Flexible layout'},
+        { value: 'Unique design', label: 'Unique design'},
+        { value: 'Email template', label: 'Email template'},
     ];
 
     return (
@@ -74,12 +102,8 @@ const NewTask = (props) => {
                             <Select name='category' options={categoryOptions} />
 
                             <label htmlFor='tag'>Task Tags</label>
-                            <TagsInput
-                                value={tag}
-                                onChange={setTag}
-                                name='tag'
-                                placeHolder='enter tags'
-                            />
+                            <Select name='tag' options={tagOptions} />
+                            
                             <div className='submit-btn'>
                                 <button className='btn' type='submit'>
                                     Save
