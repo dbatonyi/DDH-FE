@@ -102,7 +102,7 @@ const TaskManagerForm = (props) => {
                                             ? 'scrollable'
                                             : ''
                                     }>
-                                    <pre>{JSON.stringify(values, {}, 4)}</pre>
+                                    {/* <pre>{JSON.stringify(values, {}, 4)}</pre> */}
                                     <label htmlFor='title'>Task title</label>
                                     <Field
                                         component='input'

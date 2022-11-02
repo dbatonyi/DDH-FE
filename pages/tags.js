@@ -12,15 +12,15 @@ const Tags = () => {
                     <table>
                         <tbody>
                             <tr>
+                                <td>Install Drupal</td>
+                                <td></td>
+                            </tr>
+                            <tr>
                                 <td>Drupal update</td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td>External server</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Install drupal</td>
                                 <td></td>
                             </tr>
                             <tr>

@@ -55,7 +55,7 @@ const NewTask = (props) => {
     ];
 
     const tagOptions = [
-        { value: 'Install drupal', label: 'Install drupal'},
+        { value: 'Install Drupal', label: 'Install Drupal'},
         { value: 'Drupal update', label: 'Drupal update'},
         { value: 'External server', label: 'External server'},
         { value: 'Drupal 7', label: 'Drupal 7'},
