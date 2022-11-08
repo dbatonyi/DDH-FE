@@ -1,34 +1,77 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Drupal Development Helper - FE (DDH) Documentation
 
-## Getting Started
+**Author:** dbatonyi
 
-First, run the development server:
+**Stack:** Next.js
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+**Main modules:** React Final Form ( Form manager ), Moment ( Format dates ), Material UI ( Table component )
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Short description:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+The Drupal Development Helper (DDH) was made for help Drupal CMS based projects. The main goal was to help project managers and developers to create Drupal sites more efficiently.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+The application has separeta backend and frontend.
+**Backend github link:** https://github.com/dbatonyi/DDH-BE
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+The frontend code was created using the **Next.js** framework and written in **React**. The main function of the frontend is to **create/list tasks** and **create complex tasks in Trello** using a form.
 
-## Learn More
+## Setup:
 
-To learn more about Next.js, take a look at the following resources:
+Before starting the backend, you need to create a configuration file based on the example.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+First create a **config.json** file in the root of the project that contains the variables needed to run the app.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Config contains two variables, a **serverUrl** that contains the URL of the API, and an **apiToken** that contains a bearer token (_without the word Bearer_) required for authentication.
 
-## Deploy on Vercel
+You can start the application in developer mode with the following code:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    npm run dev
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Build for production
+
+    npm run build
+
+and to run it:
+
+    npm run start
+
+## Backend functions:
+
+-   User registration
+-   Password reset
+-   Create task
+-   Edit task
+-   Delete task
+-   Send complex task collections to Trello API via Task Manager From
+
+## Usable task tags:
+
+The following task tags are implemented.
+
+| Tag name                  | Tag description                                                                                                                                           |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Install Drupal**        | This tag should be used for the tasks, that may be required to create a Drupal site.                                                                      |
+| **Drupal update**         | This tag should be used for the tasks, that may be required to updating any Drupal site to a newer version.                                               |
+| **External server**       | This tag should be used for the tasks, that may be required if the site is not on our own server, or needs to be migrated from another server to our own. |
+| **Drupal 7**              | This tag should be used for the tasks, that may be required for updating a Drupal 7 site.                                                                 |
+| **Drupal 8**              | This tag should be used for the tasks, that may be required for updating a Drupal 8 site.                                                                 |
+| **Migration**             | This tag should be used for the tasks, that may be required to migrate any content from one site to another.                                              |
+| **Blog**                  | This tag should be used for the tasks, that may be required to create a blog.                                                                             |
+| **Webshop**               | This tag should be used for the tasks, that may be required to create a webshop.                                                                          |
+| **Payment method**        | This tag should be used for the tasks, that may be required to develop the payment method of the webshop.                                                 |
+| **Currency**              | This tag should be used for the tasks, that may be required to set up the payment details of the webshop.                                                 |
+| **Custom webhop**         | This tag should be used for the tasks, that may be required to develop unique webshop.                                                                    |
+| **Custumer registration** | This tag should be used for the tasks, that may be required to develop user registration.                                                                 |
+| **Product variation**     | This tag should be used for the tasks, that may be required to develop variations of the webshop's products.                                              |
+| **Invoice system**        | This tag should be used for the tasks, that may be required to develop invoice system.                                                                    |
+| **Stock management**      | This tag should be used for the tasks, that may be required to develop stock management.                                                                  |
+| **Stock update**          | This tag should be used for the tasks, that may be required to keep the stock of the webshop fresh.                                                       |
+| **Additional currencies** | This tag should be used for the tasks, that may be required to add a new currency for the webshop.                                                        |
+| **Additional VAT**        | This tag should be used for the tasks, that may be required for adding new tax types.                                                                     |
+| **Coupon system**         | This tag should be used for the tasks, that may be required to develop a webshop coupon system.                                                           |
+| **Product filters**       | This tag should be used for the tasks, that may be required for filtering the webshop's products.                                                         |
+| **Product pages**         | This tag should be used for the tasks, that may be required to develop webshop products's details page.                                                   |
+| **Layout elements**       | This tag should be used for the tasks, that may be required to develop layout element system.                                                             |
+| **Flexible layout**       | This tag should be used for the tasks, that may be required to develop flexible layout system.                                                            |
+| **Unique design**         | This tag should be used for the tasks, that may be required to develop the unique design.                                                                 |
+| **Email template**        | This tag should be used for the tasks, that may be required to develop email templates.                                                                   |
