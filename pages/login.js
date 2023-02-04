@@ -17,8 +17,8 @@ const Login = () => {
 
     useEffect(() => {
         if (authFailed) {
-            const getLoginPassword = document.querySelector('.login-password');
-            getLoginPassword.value = '';
+            const loginPassword = document.querySelector('.login-password');
+            loginPassword.value = '';
         }
     }, [authFailed]);
 

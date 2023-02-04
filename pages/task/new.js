@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-import TagsInput from 'react-tagsinput';
 import { useRouter } from 'next/router';
 import Select from 'react-select';
 import configData from '../../config.json';
@@ -30,9 +29,9 @@ const NewTask = (props) => {
 
         const response = await fetch(`${configData.serverUrl}/api/task/new`, {
             method: 'POST',
-            headers:{ 
+            headers: {
                 'Content-Type': 'application/json',
-                'authenticate': `Bearer ${configData.apiToken}`    
+                authenticate: `Bearer ${configData.apiToken}`
             },
             credentials: 'include',
             body: JSON.stringify({
@@ -55,31 +54,31 @@ const NewTask = (props) => {
     ];
 
     const tagOptions = [
-        { value: 'Install Drupal', label: 'Install Drupal'},
-        { value: 'Drupal update', label: 'Drupal update'},
-        { value: 'External server', label: 'External server'},
-        { value: 'Drupal 7', label: 'Drupal 7'},
-        { value: 'Drupal 8', label: 'Drupal 8'},
-        { value: 'Migration', label: 'Migration'},
-        { value: 'Blog', label: 'Blog'},
-        { value: 'Webshop', label: 'Webshop'},
-        { value: 'Payment method', label: 'Payment method'},
-        { value: 'Currency', label: 'Currency'},
-        { value: 'Custom webhop', label: 'Custom webhop'},
-        { value: 'Custumer registration', label: 'Custumer registration'},
-        { value: 'Product variation', label: 'Product variation'},
-        { value: 'Invoice system', label: 'Invoice system'},
-        { value: 'Stock management', label: 'Stock management'},
-        { value: 'Stock update', label: 'Stock update'},
-        { value: 'Additional currencies', label: 'Additional currencies'},
-        { value: 'Additional VAT', label: 'Additional VAT'},
-        { value: 'Coupon system', label: 'Coupon system'},
-        { value: 'Product filters', label: 'Product filters'},
-        { value: 'Product pages', label: 'Product pages'},
-        { value: 'Layout elements', label: 'Layout elements'},
-        { value: 'Flexible layout', label: 'Flexible layout'},
-        { value: 'Unique design', label: 'Unique design'},
-        { value: 'Email template', label: 'Email template'},
+        { value: 'Install Drupal', label: 'Install Drupal' },
+        { value: 'Drupal update', label: 'Drupal update' },
+        { value: 'External server', label: 'External server' },
+        { value: 'Drupal 7', label: 'Drupal 7' },
+        { value: 'Drupal 8', label: 'Drupal 8' },
+        { value: 'Migration', label: 'Migration' },
+        { value: 'Blog', label: 'Blog' },
+        { value: 'Webshop', label: 'Webshop' },
+        { value: 'Payment method', label: 'Payment method' },
+        { value: 'Currency', label: 'Currency' },
+        { value: 'Custom webhop', label: 'Custom webhop' },
+        { value: 'Custumer registration', label: 'Custumer registration' },
+        { value: 'Product variation', label: 'Product variation' },
+        { value: 'Invoice system', label: 'Invoice system' },
+        { value: 'Stock management', label: 'Stock management' },
+        { value: 'Stock update', label: 'Stock update' },
+        { value: 'Additional currencies', label: 'Additional currencies' },
+        { value: 'Additional VAT', label: 'Additional VAT' },
+        { value: 'Coupon system', label: 'Coupon system' },
+        { value: 'Product filters', label: 'Product filters' },
+        { value: 'Product pages', label: 'Product pages' },
+        { value: 'Layout elements', label: 'Layout elements' },
+        { value: 'Flexible layout', label: 'Flexible layout' },
+        { value: 'Unique design', label: 'Unique design' },
+        { value: 'Email template', label: 'Email template' }
     ];
 
     return (
@@ -103,7 +102,7 @@ const NewTask = (props) => {
 
                             <label htmlFor='tag'>Task Tags</label>
                             <Select name='tag' options={tagOptions} />
-                            
+
                             <div className='submit-btn'>
                                 <button className='btn' type='submit'>
                                     Save
